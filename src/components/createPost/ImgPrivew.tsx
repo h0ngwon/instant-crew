@@ -64,14 +64,19 @@ export default function ImgPrivew() {
                 ref={fileRef}
                 onChange={onChangeFile}
             />
-            <Card onClick={() => fileRef.current?.click()}>
-                <Image
-                    className='w-[500px] h-[500px]'
-                    src={url || ''}
-                    alt='테스트'
-                    width={500}
-                    height={500}
-                />
+            <Card
+                className='w-full h-[350px]'
+                onClick={() => fileRef.current?.click()}
+            >
+                {url && (
+                    <Image
+                        className='w-full h-[350px]'
+                        src={url}
+                        alt='테스트'
+                        width={500}
+                        height={500}
+                    />
+                )}
                 이미지를 업로드해주세요
             </Card>
             <button onClick={uploadStorage}>파일업로드 테스트</button>

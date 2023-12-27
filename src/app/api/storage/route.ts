@@ -3,12 +3,13 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request, res: NextResponse) {
     const formData = await req.formData();
-    const file = formData.get('file');
 
-    console.log(file);
+    const file = formData.get('file') as File;
+
     const { data, error } = await supabase.storage
         .from('post')
-        .upload('/test', file!);
+        .upload(`test/${file.name}`, file!);
+
     if (error) {
         return new Response(JSON.stringify({ message: error }), {
             status: 500,
