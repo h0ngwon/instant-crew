@@ -2,22 +2,28 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { useForm, SubmitHandler } from 'react-hook-form';
-
-interface LoginInput {
-    email: string;
-    password: string;
-}
+import { authInput, googleSignIn, signIn, userInfo } from '@/apis/auth';
 
 const Login = () => {
     const {
         register,
         handleSubmit,
         formState: { errors, isValid },
-    } = useForm<LoginInput>({ mode: 'onBlur' });
-    const onSubmit: SubmitHandler<LoginInput> = (data) => console.log(data);
+    } = useForm<Pick<authInput, 'email' | 'password'>>({ mode: 'onBlur' });
+    const onSubmit: SubmitHandler<Pick<authInput, 'email' | 'password'>> = (
+        data,
+    ) => console.log(data);
+
+    const onValid = (data: Pick<authInput, 'email' | 'password'>) => {
+        signIn(data);
+    };
+
+    const googleLogin = async () => {
+        googleSignIn();
+    };
 
     return (
-        <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
+        <form className='flex flex-col' onSubmit={handleSubmit(onValid)}>
             <input
                 type='email'
                 placeholder='이메일'
@@ -48,6 +54,14 @@ const Login = () => {
                 disabled={!isValid}
             >
                 로그인
+            </Button>
+            <Button
+                type='button'
+                variant='outlined'
+                className='mb-1'
+                onClick={googleLogin}
+            >
+                구글로 로그인
             </Button>
         </form>
     );

@@ -2,15 +2,10 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { useForm } from 'react-hook-form';
-
-interface RegisterInput {
-    email: string;
-    password: string;
-    passwordCheck: string;
-    nickname: string;
-}
+import { authInput, signUp } from '@/apis/auth';
 
 const Register = () => {
+    // react-hook-form
     const {
         register, // onchage, onblur, onclick등 가진 객체 생성
         //form onsubimt에 들어가는 함수.
@@ -18,10 +13,10 @@ const Register = () => {
         handleSubmit,
         setError, //errors에 별도의 에러메시지를 추가할 수 있게 해준다
         formState: { errors, isValid }, //register들의 에러메시지를 자동출력해준다
-    } = useForm<RegisterInput>({ mode: 'onBlur' });
+    } = useForm<authInput>({ mode: 'onBlur' });
 
     //데이터가 유효할 때 실행되는 함수
-    const onValid = (data: RegisterInput) => {
+    const onValid = (data: authInput) => {
         if (data.password !== data.passwordCheck) {
             setError(
                 'passwordCheck', // 에러 핸들링할 input요소 name
@@ -30,7 +25,7 @@ const Register = () => {
             );
             return;
         }
-        console.log(data);
+        signUp(data);
     };
 
     return (
