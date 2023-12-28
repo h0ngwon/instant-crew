@@ -13,18 +13,18 @@ export const signUp = async ({ email, password, nickname }: authInput) => {
     const defaultPhotoUrl =
         'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26470D3654FC08C40C';
     const uuid = uuidv4();
-    try {
-        await supabase.auth.signUp({
-            email,
-            password,
-        });
-        const { data } = await supabase.auth.updateUser({
+
+    const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+    });
+    const { data: userData, error: userError } = await supabase.auth.updateUser(
+        {
             data: { nickname, defaultPhotoUrl, id: uuid },
-        });
-        console.log(data);
-    } catch (error) {
-        console.log(error);
-    }
+        },
+    );
+    console.log({ data, userData, userError });
+    return { data, error };
 };
 
 // 로그인
@@ -32,15 +32,11 @@ export const signIn = async ({
     email,
     password,
 }: Pick<authInput, 'email' | 'password'>) => {
-    try {
-        const { data } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-        console.log(data);
-    } catch (error) {
-        console.log(error);
-    }
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+    });
+    return { data, error };
 };
 
 // 구글 로그인
@@ -52,16 +48,15 @@ export const googleSignIn = async () => {
                 access_type: 'offline',
                 prompt: 'consent',
             },
-            skipBrowserRedirect: true,
         },
     });
-    console.log(data);
+    console.log({ data, error });
 };
 
 // 로그아웃
-export const logout = async () => {
+export const signOut = async () => {
     try {
-        const { error } = await supabase.auth.signOut();
+        await supabase.auth.signOut();
     } catch (error) {
         console.log(error);
     }
@@ -72,5 +67,6 @@ export const userInfo = async () => {
     const {
         data: { user },
     } = await supabase.auth.getUser();
-    console.log(user);
+    console.log('userInfo');
+    // return user;
 };

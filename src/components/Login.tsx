@@ -1,21 +1,29 @@
 'use client';
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { authInput, googleSignIn, signIn, userInfo } from '@/apis/auth';
+import { useForm } from 'react-hook-form';
+import { authInput, googleSignIn, signIn } from '@/apis/auth';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '@/recoil/authAtom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
+    const setUserInfo = useSetRecoilState(userState);
     const {
         register,
         handleSubmit,
         formState: { errors, isValid },
     } = useForm<Pick<authInput, 'email' | 'password'>>({ mode: 'onBlur' });
-    const onSubmit: SubmitHandler<Pick<authInput, 'email' | 'password'>> = (
-        data,
-    ) => console.log(data);
 
-    const onValid = (data: Pick<authInput, 'email' | 'password'>) => {
-        signIn(data);
+    const onValid = async (data: Pick<authInput, 'email' | 'password'>) => {
+        const { error, data: response } = await signIn(data);
+        if (error) {
+            toast.error('로그인 정보를 확인해주세요');
+        }
+        setUserInfo({
+            session: response?.session,
+            user: response?.user,
+        });
     };
 
     const googleLogin = async () => {

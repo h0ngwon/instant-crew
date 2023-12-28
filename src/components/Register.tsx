@@ -16,7 +16,7 @@ const Register = () => {
     } = useForm<authInput>({ mode: 'onBlur' });
 
     //데이터가 유효할 때 실행되는 함수
-    const onValid = (data: authInput) => {
+    const onValid = async (data: authInput) => {
         if (data.password !== data.passwordCheck) {
             setError(
                 'passwordCheck', // 에러 핸들링할 input요소 name
@@ -25,7 +25,7 @@ const Register = () => {
             );
             return;
         }
-        signUp(data);
+        await signUp(data);
     };
 
     return (
