@@ -18,17 +18,22 @@ export interface ITextFields {
 
 export default function CreatePostForm() {
     const methods = useForm<ITextFields>();
-
     async function submit(data: ITextFields) {
         const { title, category, date, content, url, file, location } = data;
+        const test = await fetch('/api/test', { method: 'get' });
+        console.log(test);
+        const newtest = await test.json();
+        console.log(newtest);
 
+        console.log(data);
         if (!date) console.log('날짜가 없습니다.');
         if (!location) console.log('위치정보가 없습니다.');
         if (!file) console.log('사진이 없습니다.');
 
-        console.log(file);
-        const downloadUrl = await uploadStorage(file);
-        console.log(downloadUrl);
+        // const downloadUrl = await uploadStorage(file);
+        // console.log(downloadUrl);
+
+        axios.post('/api/post', data);
     }
 
     async function uploadStorage(file: File) {

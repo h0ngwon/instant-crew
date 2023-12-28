@@ -64,7 +64,7 @@ export default function CreatePostTextFields() {
                 id='standard-basic'
                 label='카테고리'
                 variant='outlined'
-                {...register('catrgory', { required: true })}
+                {...register('category', { required: true })}
                 SelectProps={{
                     native: true,
                 }}
@@ -89,9 +89,9 @@ export default function CreatePostTextFields() {
                                         onChange(null);
                                     } else {
                                         onChange(
-                                            `${event.$y}년${event.$M + 1}월 ${
+                                            `${event.$y}-${event.$M + 1}-${
                                                 event.$D
-                                            }일`,
+                                            }`,
                                         );
                                     }
                                 }}

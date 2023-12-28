@@ -8,7 +8,7 @@ export default function ImgPrivew() {
     const [file, setFile] = useState<null | File>(null);
     const [url, setUrl] = useState<string | null>();
     const fileRef = useRef<HTMLInputElement>(null);
-    const { register, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
     async function onChangeFile(e: ChangeEvent<HTMLInputElement>) {
         const targetFile = e.target.files?.[0];
