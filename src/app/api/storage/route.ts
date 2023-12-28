@@ -5,10 +5,11 @@ export async function POST(req: Request, res: NextResponse) {
     const formData = await req.formData();
 
     const file = formData.get('file') as File;
+    console.log(file);
 
     const { data, error } = await supabase.storage
         .from('post')
-        .upload(`test/${file.name}`, file!);
+        .upload(`/${file.name}`, file!);
 
     if (error) {
         return new Response(JSON.stringify({ message: error }), {
