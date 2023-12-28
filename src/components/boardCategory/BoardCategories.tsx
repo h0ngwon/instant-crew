@@ -14,12 +14,14 @@ const BoardCategories = ({ category }: Props) => {
     ];
 
     return (
-        <div className='flex gap-[100px] justify-center'>
+        <div className='flex gap-[150px] justify-center'>
             {categoryData.map((item) => (
                 <Link href={`/board?category=${item.name}`} key={item.id}>
                     <h2
                         className={`${
-                            category === item.name && 'text-main-color'
+                            category === item.name
+                                ? 'text-[#D24B4B] font-bold text-[1.5rem]'
+                                : 'text-[#ACACAC] text-[1.5rem]'
                         }`}
                     >
                         {item.name}
