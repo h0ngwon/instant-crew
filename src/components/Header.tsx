@@ -1,13 +1,14 @@
 import { Button } from '@mui/material';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from './Modal';
 import Login from './Login';
 import Register from './Register';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { modalState } from '@/recoil/modalAtom';
 import { userState } from '@/recoil/authAtom';
 import { signOut } from '@/apis/auth';
+import { supabase } from '@/apis/dbApi';
 
 const Header = () => {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -18,7 +19,7 @@ const Header = () => {
     const clearUserInfo = () => {
         setUserInfo({
             session: undefined,
-            user: undefined,
+            // user: undefined,
         });
     };
 
@@ -26,6 +27,19 @@ const Header = () => {
         signOut();
         clearUserInfo();
     };
+
+    useEffect(() => {
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') {
+                setUserInfo({
+                    session,
+                    // user: undefined,
+                });
+                console.log(session, event);
+            }
+        });
+    }, []);
+
     return (
         <header className='w-full'>
             <div className='h-[45px] w-full bg-main-background flex justify-between items-center p-4 '>
@@ -34,7 +48,7 @@ const Header = () => {
                 </div>
                 <nav role='navigation' aria-label='네비게이션'>
                     <ul className='flex flex-row gap-5 items-center'>
-                        {!userInfo.user ? (
+                        {!userInfo.session ? (
                             <>
                                 <li>
                                     <Button

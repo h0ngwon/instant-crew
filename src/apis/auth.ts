@@ -10,7 +10,7 @@ export interface authInput {
 
 // 회원가입
 export const signUp = async ({ email, password, nickname }: authInput) => {
-    const defaultPhotoUrl =
+    const avatar_url =
         'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26470D3654FC08C40C';
     const uuid = uuidv4();
 
@@ -21,7 +21,7 @@ export const signUp = async ({ email, password, nickname }: authInput) => {
             data: {
                 nickname,
                 id: uuid,
-                defaultPhotoUrl,
+                avatar_url,
             },
         },
     });
@@ -46,13 +46,10 @@ export const googleSignIn = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-            queryParams: {
-                access_type: 'offline',
-                prompt: 'consent',
-            },
+            redirectTo: 'http://localhost:3000/',
         },
     });
-    console.log({ data, error });
+    return { data, error };
 };
 
 // 로그아웃
@@ -65,10 +62,10 @@ export const signOut = async () => {
 };
 
 // 유저정보
-export const userInfo = async () => {
+export const getUser = async () => {
     const {
         data: { user },
     } = await supabase.auth.getUser();
-    console.log('userInfo');
+    console.log({ user });
     // return user;
 };

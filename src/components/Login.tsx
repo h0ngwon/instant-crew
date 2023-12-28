@@ -23,16 +23,16 @@ const Login = () => {
             toast.error('로그인 정보를 확인해주세요');
             return;
         }
-        setUserInfo({
-            session: response?.session,
-            user: response?.user,
-        });
+        // setUserInfo({
+        //     session: response?.session,
+        //     // user: response?.user,
+        // });
         toast.success('로그인 성공!');
         setShowModal({ show: false });
     };
 
     const googleLogin = async () => {
-        googleSignIn();
+        const { data: response, error } = await googleSignIn();
         setShowModal({ show: false });
     };
 

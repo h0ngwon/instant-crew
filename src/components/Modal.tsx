@@ -31,7 +31,7 @@ export default function BasicModal({ title, buttonName, children }: Props) {
     const handleClose = () => setShowModal({ show: false, key: title });
 
     return (
-        <div>
+        <>
             {/* <Button onClick={handleOpen}>{title}</Button> */}
             <Modal
                 open={showModal.show}
@@ -59,6 +59,6 @@ export default function BasicModal({ title, buttonName, children }: Props) {
                     </Button>
                 </Box>
             </Modal>
-        </div>
+        </>
     );
 }

@@ -1,7 +1,7 @@
 import Category from '@/components/Category';
 import Recent from '@/components/Recent';
 import Recommend from '@/components/Recommend';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './globals.css';
 import './reset.css';
 import { ToastContainer } from 'react-toastify';
