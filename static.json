@@ -1,0 +1,24 @@
+{
+    "banner" : [
+        {
+            "id": 1,
+            "url" : "/img/restaurant.png",
+            "content": "맛집"
+        },
+        {
+            "id": 2,
+            "url" : "/img/art.png",
+            "content": "문화 예술"
+        },
+        {
+            "id" : 3,
+            "url" : "/img/study.png",
+            "content": "스터디"
+        },
+        {
+            "id" : 4,
+            "url" : "/img/workout.png",
+            "content": "운동"
+        }
+    ]
+}
