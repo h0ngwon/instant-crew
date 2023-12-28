@@ -12,9 +12,15 @@ const config: Config = {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                 'gradient-conic':
                     'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+                'gradient-image':
+                    'linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.55));',
             },
             colors: {
-                'main-color': '#FFB534',
+                'main-background': 'var(--main-background)',
+                'main-color': 'var(--main-color)',
+            },
+            boxShadow: {
+                'main-shadow': '7px 7px 10px 0px rgba(0,0,0,0.3)',
             },
         },
     },
