@@ -1,11 +1,6 @@
-import { getData } from '@/api/dbApi';
 import Image from 'next/image';
 
-
-
 const Recent = () => {
-    const data = getData();
-    console.log(data);
     return (
         <section id='recent' className='h-[50vh]'>
             <div className='p-[30px]'>
