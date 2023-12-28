@@ -20,7 +20,7 @@ export const getRecommendData = async (): Promise<any> => {
         const { data, error } = await supabase
             .from('post')
             .select('*')
-            .order('random', { ascending: false })
+            .order('id', { ascending: false })
             .limit(2);
 
         if (error) throw new Error();
