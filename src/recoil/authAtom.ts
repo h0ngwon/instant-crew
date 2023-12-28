@@ -1,4 +1,4 @@
-import { AuthError, Session, User } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 import { atom } from 'recoil';
 
 export interface AuthType {

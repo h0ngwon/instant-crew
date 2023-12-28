@@ -6,9 +6,11 @@ import { authInput, googleSignIn, signIn } from '@/apis/auth';
 import { useSetRecoilState } from 'recoil';
 import { userState } from '@/recoil/authAtom';
 import { toast } from 'react-toastify';
+import { modalState } from '@/recoil/modalAtom';
 
 const Login = () => {
     const setUserInfo = useSetRecoilState(userState);
+    const setShowModal = useSetRecoilState(modalState);
     const {
         register,
         handleSubmit,
@@ -19,15 +21,19 @@ const Login = () => {
         const { error, data: response } = await signIn(data);
         if (error) {
             toast.error('로그인 정보를 확인해주세요');
+            return;
         }
         setUserInfo({
             session: response?.session,
             user: response?.user,
         });
+        toast.success('로그인 성공!');
+        setShowModal({ show: false });
     };
 
     const googleLogin = async () => {
         googleSignIn();
+        setShowModal({ show: false });
     };
 
     return (

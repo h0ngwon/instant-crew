@@ -14,17 +14,18 @@ export const signUp = async ({ email, password, nickname }: authInput) => {
         'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26470D3654FC08C40C';
     const uuid = uuidv4();
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
         email,
         password,
-    });
-    const { data: userData, error: userError } = await supabase.auth.updateUser(
-        {
-            data: { nickname, defaultPhotoUrl, id: uuid },
+        options: {
+            data: {
+                nickname,
+                id: uuid,
+                defaultPhotoUrl,
+            },
         },
-    );
-    console.log({ data, userData, userError });
-    return { data, error };
+    });
+    return { error };
 };
 
 // 로그인
@@ -36,6 +37,7 @@ export const signIn = async ({
         email,
         password,
     });
+    // console.log(data, error);
     return { data, error };
 };
 

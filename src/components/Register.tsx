@@ -3,8 +3,13 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { useForm } from 'react-hook-form';
 import { authInput, signUp } from '@/apis/auth';
+import { toast } from 'react-toastify';
+import { useSetRecoilState } from 'recoil';
+import { modalState } from '@/recoil/modalAtom';
 
 const Register = () => {
+    const setShowModal = useSetRecoilState(modalState);
+
     // react-hook-form
     const {
         register, // onchage, onblur, onclick등 가진 객체 생성
@@ -25,7 +30,13 @@ const Register = () => {
             );
             return;
         }
-        await signUp(data);
+        const { error } = await signUp(data);
+        if (error) {
+            toast.error('이미 존재하는 이메일입니다');
+            return;
+        }
+        toast.success('회원가입 성공!');
+        setShowModal({ show: false });
     };
 
     return (

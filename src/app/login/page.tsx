@@ -7,8 +7,6 @@ import { useRecoilState } from 'recoil';
 import { userState } from '@/recoil/authAtom';
 import { Button } from '@mui/material';
 import { signOut } from '@/apis/auth';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -39,7 +37,6 @@ const LoginPage = () => {
             ) : (
                 <Button onClick={logout}>로그아웃</Button>
             )}
-            <ToastContainer />
         </div>
     );
 };
