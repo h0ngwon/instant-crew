@@ -1,6 +1,7 @@
 import { PostType } from '@/components/BoardMain';
 import { supabase } from '../dbApi';
 import { NextResponse } from 'next/server';
+
 export const GET = async () => {
     let { data: post, error } = await supabase.from('post').select('*');
     // return NextResponse.json(post);
@@ -8,7 +9,7 @@ export const GET = async () => {
 };
 
 // GET POST BY PAGE 동작 방식
-// post 데이터를 요청을 ㅐㅎ야함 이때, 개수를 설정한다.
+// post 데이터를 요청을 해야함 이때, 개수를 설정한다.
 // 100개의 데이터가 있으면 10개씩 끊어서 가져온다.
 // 10개로 나눠서 가져올 수 있음 -> 나눠지는거를 페이지라는 개념으로 가져간다.
 // 5라는 페이지를 넣으면 -> 50번 째부터 ~ 60번 까지의 데이터를 가지고 와야한다.

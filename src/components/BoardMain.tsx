@@ -52,7 +52,6 @@ export default function BoardMain({ category }: { category?: string }) {
                 document.documentElement.scrollHeight - 1
                 // 만약 0이라면 맨 밑에서 이벤트를 발생시켜줘, 1000 맨밑에서부터 1000px위에 있을때 이벤트를 발생시켜줘
             ) {
-                // 원리는 다 똑같음 // 노 라이브러리 쌩으로 구현한거임
                 // react-query + Obsecver 기능을 해가지고 더 편리하게 구현이 가능한거임
                 setPage((prev) => prev + 1);
             }

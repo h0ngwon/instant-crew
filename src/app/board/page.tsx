@@ -1,8 +1,7 @@
 import BoardCategories from '@/components/boardCategory/BoardCategories';
-import { GET, GET_POST_BY_PAGE } from '../api/post/route';
 import axios from 'axios';
-import Image from 'next/image';
 import BoardMain from '@/components/BoardMain';
+
 interface Props {
     searchParams?: {
         category?: string;
