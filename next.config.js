@@ -8,6 +8,7 @@ const nextConfig = {
                 hostname: 'a.cdn-hotels.com',
             },
         ],
+        domains: ['rummvqozlgllyttgdnqh.supabase.co']
     },
 };
 
