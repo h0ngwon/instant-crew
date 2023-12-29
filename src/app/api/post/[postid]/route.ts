@@ -2,27 +2,20 @@ import { supabase } from '@/apis/dbApi';
 import { useSearchParams } from 'next/navigation';
 import { NextRequest } from 'next/server';
 
-interface IProps {
-    req: NextRequest;
-    context: { postid: string };
-}
+export const GET = async (
+    req: NextRequest,
+    context: { params: { postid: string } },
+) => {
+    const {
+        params: { postid },
+    } = context;
 
-// export async function GET({ req, params: { postid } }: IProps) {
-//     const body = req.json();
+    let { data: post, error } = await supabase
+        .from('post')
+        .select('*')
+        .eq('id', postid);
 
-//     console.log('서버~~~~~~~~~');
-//     console.log(postid);
-//     // const post = await supabase.from('post').select();
-// }
-
-export const GET = async ({ req, context }: IProps) => {
-    let { data: post, error } = await supabase.from('post').select('*');
-    // return NextResponse.json(post);
-    // return post;
-    console.log(context);
-    console.log(req);
-
-    // console.log(params.postid);
+    console.log(post);
 
     return new Response(JSON.stringify(post), { status: 200 });
 };
