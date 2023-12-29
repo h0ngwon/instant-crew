@@ -15,7 +15,5 @@ export const GET = async (
         .select('*')
         .eq('id', postid);
 
-    console.log(post);
-
     return new Response(JSON.stringify(post), { status: 200 });
 };

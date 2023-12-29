@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
             status: 500,
         });
     } else {
-        console.log(data);
         return NextResponse.json(data);
     }
 }

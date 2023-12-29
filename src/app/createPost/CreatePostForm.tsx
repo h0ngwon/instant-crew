@@ -7,10 +7,11 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { Button } from '@mui/material';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
+import useQueryPost from '@/hooks/useQueryPost';
 export interface ITextFields {
     title: string;
     category: '맛집' | '문화예술' | '스터디' | '운동';
-    date: Date | null;
+    date: string;
     content: string;
     file: File;
     location: { lat: number; lng: number };
@@ -18,6 +19,7 @@ export interface ITextFields {
 
 export default function CreatePostForm() {
     const methods = useForm<ITextFields>();
+    const { createPost } = useQueryPost();
 
     async function submit(data: ITextFields) {
         const id = uuid();
@@ -25,20 +27,15 @@ export default function CreatePostForm() {
         if (!date) console.log('날짜가 없습니다.');
         if (!location) console.log('위치정보가 없습니다.');
         if (!file) console.log('사진이 없습니다.');
-
         const picture = await uploadStorage(file, id);
 
-        const response = await axios.post(
-            '/api/post',
-            { ...data, picture, id },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+        createPost({
+            Row: {
+                ...data,
+                id,
+                picture,
             },
-        );
-
-        console.log(response);
+        });
     }
 
     async function uploadStorage(file: File, path: string) {

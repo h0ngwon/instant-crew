@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import React from 'react';
 
 export default function useQueryPost(postid?: string) {
     const queryClient = useQueryClient();
@@ -15,10 +14,10 @@ export default function useQueryPost(postid?: string) {
     });
 
     const { mutate: createPost } = useMutation({
-        mutationFn: (formData: FormData) => {
-            const response = axios.post('/api/storage', formData, {
+        mutationFn: async ({ Row }: any) => {
+            const response = await axios.post('/api/post', Row, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                 },
             });
             return response;
@@ -26,7 +25,9 @@ export default function useQueryPost(postid?: string) {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['post'] });
         },
-        onError: () => {},
+        onError: (error) => {
+            console.log(error);
+        },
     });
 
     return { post: data, error, loading: isLoading, createPost };
