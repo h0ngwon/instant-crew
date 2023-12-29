@@ -1,16 +1,16 @@
 import { PostType } from '@/components/BoardMain';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/apis/dbApi';
 
 export const GET = async () => {
     let { data: post, error } = await supabase.from('post').select('*');
     // return NextResponse.json(post);
     return post;
+    // return new Response(JSON.stringify(post), { status: 200 });
 };
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: NextRequest) {
     const body = await req.json();
-    console.log(body);
     const { file, ...rest } = body;
 
     const { data, error } = await supabase
@@ -22,21 +22,13 @@ export async function POST(req: Request, res: NextResponse) {
         ])
         .select();
 
-    console.log(data);
-    console.log(error);
-    // if (error) {
-    //     return new Response(JSON.stringify({ message: error }), {
-    //         status: 500,
-    //     });
-    // } else {
-    //     console.log(data);
-    //     return new Response(
-    //         JSON.stringify({ message: '파일업로드에 성공하였습니다.' }),
-    //         {
-    //             status: 200,
-    //         },
-    //     );
-    // }
+    if (error) {
+        return new Response(JSON.stringify({ message: error }), {
+            status: 500,
+        });
+    } else {
+        return NextResponse.json(data);
+    }
 }
 const PAGE_SIZE = 6;
 export const GET_POST_BY_PAGE = async (page: number = 0) => {
