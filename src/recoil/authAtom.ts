@@ -1,4 +1,3 @@
-import { Session, User } from '@supabase/supabase-js';
 import { atom } from 'recoil';
 
 export interface AuthType {
@@ -6,8 +5,6 @@ export interface AuthType {
     avatar_url: string;
     full_name: string;
     email: string;
-    // session: Session | undefined | null;
-    // user: User | undefined | null;
 }
 
 export const userState = atom<AuthType>({
@@ -17,7 +14,5 @@ export const userState = atom<AuthType>({
         avatar_url: '',
         full_name: '',
         email: '',
-        // session: null,
-        // user: null,
     }, // default value (aka initial value)
 });
