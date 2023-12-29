@@ -13,6 +13,7 @@ const nextConfig = {
                 hostname: 'rummvqozlgllyttgdnqh.supabase.co',
             },
         ],
+        domains: ['rummvqozlgllyttgdnqh.supabase.co']
     },
 };
 
