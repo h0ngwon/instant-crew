@@ -13,14 +13,15 @@ import {
 } from 'react-kakao-maps-sdk';
 
 interface IPostMap {
-    lat: number;
-    lng: number;
+    location: string;
 }
 
-export default function PostMap({ lat, lng }: IPostMap) {
+export default function PostMap({ location }: IPostMap) {
     const [loading, error] = useKakaoLoader({
         appkey: process.env.NEXT_PUBLIC_KAKAO_KEY?.toString() || '',
     });
+
+    const { lat, lng } = JSON.parse(location);
     const [userLocation, setUserLocation] = useState<IGeolocation>({
         center: {
             lat: 0,
@@ -47,9 +48,11 @@ export default function PostMap({ lat, lng }: IPostMap) {
         geolocation({ setState: setUserLocation });
     }, []);
 
+    console.log(JSON.parse(location));
+
     return (
         <>
-            <div className='w-screen h-[500px] relative'>
+            <div className='w-full h-[500px] relative'>
                 <Map
                     // zoomable={false}
                     center={center}
