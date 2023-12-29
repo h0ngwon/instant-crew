@@ -38,7 +38,7 @@ export async function POST(req: Request, res: NextResponse) {
     //     );
     // }
 }
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 6;
 export const GET_POST_BY_PAGE = async (page: number = 0) => {
     const { data, count } = await supabase
         .from('post')

@@ -63,17 +63,17 @@ export default function BoardMain({ category }: { category?: string }) {
     }, []);
 
     return (
-        <main className='max-w-[1200px] m-auto grid grid-cols-2 gap-10 p-10 h-max'>
+        <main className='max-w-[1200px] m-auto grid grid-cols-2 gap-[50px] p-10 h-max'>
             {posts.map((item, index) => (
                 <div
                     key={index}
-                    className='border-solid border-[1px] rounded-[1.5rem] h-[150px]'
+                    className='border-solid border-[1px] rounded-[1.5rem] h-[180px]'
                 >
-                    <div className='float-left'>
+                    <div className='float-left w-[180px] mr-[10px]'>
                         <Image
                             src={item.picture as string}
                             alt='게시글 이미지'
-                            className='w-auto h-[150px] mr-[10px] rounded-l-3xl'
+                            className='w-[100%] h-[180px] rounded-l-3xl'
                             width={100}
                             height={100}
                         />
