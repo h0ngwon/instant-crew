@@ -7,19 +7,18 @@ import { Data } from '@/app/api/post/recommend/route';
 const Recommend = () => {
     const [recommendData, setRecommendData] = useState<Data>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getRandomData();
-                setRecommendData(response.data);
-            } catch (err) {
-                throw new Error();
-            }
-        };
-        fetchData();
-    }, []);
+    const fetchRandomData = async (): Promise<void> => {
+        try {
+            const response = await getRandomData();
+            setRecommendData(response.data);
+        } catch (err) {
+            throw new Error();
+        }
+    };
 
-    console.log(recommendData);
+    useEffect(() => {
+        fetchRandomData();
+    }, []);
 
     return (
         <section id='recommend' className='h-[50vh]'>
@@ -33,10 +32,22 @@ const Recommend = () => {
                             <Card key={rec.id} className='shadow-main-shadow'>
                                 <Box className='w-full h-[100%] flex items-center'>
                                     <CardMedia
-                                        className='w-[60%] h-[100%] object-contain'
+                                        className='w-[60%] h-[100%]'
                                         image={`${rec.picture}`}
                                     />
-                                    <CardContent>{rec.content}</CardContent>
+                                    <CardContent className='flex flex-col justify-center items-center w-[40%] truncate'>
+                                        <div className='h-[50%] truncate'>
+                                            <h1 className='text-[36px] font-bold truncate'>
+                                                {rec.title}
+                                            </h1>
+                                        </div>
+                                        <p className='text-[20px] mt-[10px] truncate'>
+                                            {rec.content}
+                                        </p>
+                                        <p className='text-[16px] mt-[10px] truncate'>
+                                            {rec.date}
+                                        </p>
+                                    </CardContent>
                                 </Box>
                             </Card>
                         );

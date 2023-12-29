@@ -13,3 +13,16 @@ export const getRandomData = (): Promise<AxiosResponse<Data, AxiosError>>=> {
         throw new Error();
     }
 };
+
+export const getRecentData = (): Promise<AxiosResponse<Data, AxiosError>>=> {
+    try {
+        const res = axios.get<Data>('api/post/recent', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return res;
+    } catch (err) {
+        throw new Error();
+    }
+};
