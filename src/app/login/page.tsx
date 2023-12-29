@@ -7,8 +7,7 @@ import { useRecoilState } from 'recoil';
 import { userState } from '@/recoil/authAtom';
 import { Button } from '@mui/material';
 import { signOut } from '@/apis/auth';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { getUser } from '../../apis/auth';
 
 const LoginPage = () => {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -16,7 +15,6 @@ const LoginPage = () => {
     const clearUserInfo = () => {
         setUserInfo({
             session: undefined,
-            user: undefined,
         });
     };
 
@@ -25,9 +23,13 @@ const LoginPage = () => {
         clearUserInfo();
     };
 
+    React.useEffect(() => {
+        getUser();
+    }, []);
+
     return (
         <div>
-            {!userInfo.user ? (
+            {!userInfo.session ? (
                 <>
                     <Modal title='로그인' buttonName='로그인'>
                         <Login />
@@ -39,7 +41,6 @@ const LoginPage = () => {
             ) : (
                 <Button onClick={logout}>로그아웃</Button>
             )}
-            <ToastContainer />
         </div>
     );
 };

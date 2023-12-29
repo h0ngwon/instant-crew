@@ -17,18 +17,9 @@ export async function POST(req: Request) {
     //     });
     // }
     if (error) {
-        return NextResponse.json(
-            { error: 'Internal Server Error' },
-            { status: 500 },
-        );
+        console.log(error);
+        return new Response(JSON.stringify({ error }), { status: 400 });
     } else {
-        console.log(data);
-
-        return new Response(
-            JSON.stringify({ message: '파일업로드에 성공하였습니다.' }),
-            {
-                status: 200,
-            },
-        );
+        return NextResponse.json(data);
     }
 }
