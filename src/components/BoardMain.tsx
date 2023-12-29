@@ -5,7 +5,6 @@ import {
     GET_POST_BY_PAGE,
     GET_POST_BY_PAGE_AND_CATEGORY,
 } from '@/app/api/post/route';
-import axios from 'axios';
 
 export type PostType = {
     category: string;
@@ -22,7 +21,6 @@ export type PostType = {
 export default function BoardMain({ category }: { category?: string }) {
     const [page, setPage] = useState<number>(0);
     const [posts, setPosts] = useState<PostType[]>([]);
-    const [locations, setLocations] = useState<string[]>([]);
 
     useEffect(() => {
         GET_POST_BY_PAGE_AND_CATEGORY(0, category).then((res) => {
@@ -63,69 +61,10 @@ export default function BoardMain({ category }: { category?: string }) {
             window.removeEventListener('scroll', handleInfinityScroll);
         };
     }, []);
-    const getLocationInfo = async (latitude: string, longitude: string) => {
-        try {
-            const response = await axios.get(
-                `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`,
-                {
-                    headers: {
-                        Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_KEY}`,
-                    },
-                },
-            );
-
-            if (response.data.documents.length > 0) {
-                const regionInfo = response.data.documents[0];
-                console.log('지역 동 정보:', regionInfo);
-                return regionInfo;
-            } else {
-                console.log('지역 동 정보를 찾을 수 없습니다.');
-                return null;
-            }
-        } catch (error) {
-            console.error('API 호출 중 오류:', error);
-            return null;
-        }
-    };
-
-    const creatorLocation = (location: string | null) => {
-        const lat = location?.slice(7, 24);
-        const long = location?.slice(32, 54);
-
-        if (lat && long) {
-            getLocationInfo(lat, long).then((regionInfo) => {
-                // 여기에서 가져온 지역 동 정보(regionInfo)를 사용하여 표시할 수 있습니다.
-                // 예를 들어, regionInfo에서 필요한 정보를 추출하여 UI에 표시할 수 있습니다.
-            });
-        } else {
-            console.log('잘못된 좌표 정보입니다.');
-        }
-    };
 
     const createTime = (createtime: string) => {
         return createtime.slice(0, 16).replace('T', ' ');
     };
-
-    const handleLocationInfo = async (location: string | null) => {
-        if (!location) return;
-        const lat = location?.slice(7, 24);
-        const long = location?.slice(32, 54);
-        if (lat && long) {
-            const regionInfo = await getLocationInfo(lat, long);
-            if (regionInfo) {
-                const address = regionInfo?.address_name;
-                setLocations((prev) => [...prev, address]);
-            }
-        } else {
-            console.log('잘못된 좌표 정보입니다.');
-        }
-    };
-
-    useEffect(() => {
-        posts.forEach((item) => {
-            handleLocationInfo(item.location);
-        });
-    }, [posts]);
 
     return (
         <main className='max-w-[1200px] m-auto grid grid-cols-2 gap-[50px] p-10 h-max'>
@@ -145,7 +84,7 @@ export default function BoardMain({ category }: { category?: string }) {
                     </div>
                     <div className='float-left w-[170px]'>
                         <h1 className='my-[20px] text-[1.3rem] font-bold'>
-                            {creatorLocation(item.location)}
+                            {item.location}
                         </h1>
                         <div className='my-[10px] h-[40px] truncate'>
                             {item.title}
