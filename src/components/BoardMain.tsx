@@ -62,26 +62,34 @@ export default function BoardMain({ category }: { category?: string }) {
         };
     }, []);
 
+    const createTime = (createtime: string) => {
+        return createtime.slice(0, 16).replace('T', ' ');
+    };
+
     return (
-        <main className='max-w-[1200px] m-auto grid grid-cols-2 gap-10 p-10 h-max'>
+        <main className='max-w-[1200px] m-auto grid grid-cols-2 gap-[50px] p-10 h-max'>
             {posts.map((item, index) => (
                 <div
                     key={index}
-                    className='border-solid border-[1px] rounded-[1.5rem] h-[150px]'
+                    className='border-solid border-[1px] rounded-[1.5rem] h-[180px]'
                 >
-                    <div className='float-left'>
+                    <div className='float-left w-[180px] mr-[20px]'>
                         <Image
                             src={item.picture as string}
                             alt='게시글 이미지'
-                            className='w-auto h-[150px] mr-[10px] rounded-l-3xl'
+                            className='w-[100%] h-[180px] rounded-l-3xl'
                             width={100}
                             height={100}
                         />
                     </div>
-                    <div>
-                        <h1>{item.category}</h1>
-                        <div>{item.title}</div>
-                        <div>{item.content}</div>
+                    <div className='float-left w-[170px]'>
+                        <h1 className='my-[20px] text-[1.3rem] font-bold'>
+                            {item.location}
+                        </h1>
+                        <div className='my-[10px] h-[40px] truncate'>
+                            {item.title}
+                        </div>
+                        <div>{createTime(item.created_at)}</div>
                     </div>
                 </div>
             ))}
