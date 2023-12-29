@@ -4,6 +4,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import RoomIcon from '@mui/icons-material/Room';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import { Typography } from '@mui/material';
 
 import {
     CustomOverlayMap,
@@ -48,10 +49,11 @@ export default function PostMap({ location }: IPostMap) {
         geolocation({ setState: setUserLocation });
     }, []);
 
-    console.log(JSON.parse(location));
-
     return (
         <>
+            <Typography variant='h4' className='font-semibold'>
+                장소
+            </Typography>
             <div className='w-full h-[500px] relative'>
                 <Map
                     // zoomable={false}

@@ -45,6 +45,7 @@ export default function CreatePostForm() {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('path', path);
+        formData.append('buckets', '');
 
         const response = await axios.post('/api/storage', formData, {
             headers: {

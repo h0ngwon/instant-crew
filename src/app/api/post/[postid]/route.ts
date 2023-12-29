@@ -1,6 +1,6 @@
 import { supabase } from '@/apis/dbApi';
 import { useSearchParams } from 'next/navigation';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (
     req: NextRequest,
@@ -15,5 +15,5 @@ export const GET = async (
         .select('*')
         .eq('id', postid);
 
-    return new Response(JSON.stringify(post), { status: 200 });
+    return NextResponse.json(post);
 };

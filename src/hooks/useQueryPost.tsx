@@ -1,9 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-
+export interface IPost {
+    category: string;
+    content: string;
+    created_at: Date;
+    date: string;
+    id: string;
+    location: string;
+    picture: string;
+    title: string;
+    user_id: string;
+}
 export default function useQueryPost(postid?: string) {
     const queryClient = useQueryClient();
-    const { data, error, isLoading } = useQuery({
+    const { data, error, isLoading } = useQuery<IPost[]>({
         queryFn: async () => {
             const response = await axios.get(
                 `/api/post${postid && `/${postid}`}`,
