@@ -1,11 +1,10 @@
 'use client';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './reset.css';
-import './globals.css';
 import Header from '@/components/Header';
+import { Inter } from 'next/font/google';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import './globals.css';
+import './reset.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
