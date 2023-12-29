@@ -4,6 +4,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import RoomIcon from '@mui/icons-material/Room';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import { Typography } from '@mui/material';
 
 import {
     CustomOverlayMap,
@@ -13,14 +14,15 @@ import {
 } from 'react-kakao-maps-sdk';
 
 interface IPostMap {
-    lat: number;
-    lng: number;
+    location: string;
 }
 
-export default function PostMap({ lat, lng }: IPostMap) {
+export default function PostMap({ location }: IPostMap) {
     const [loading, error] = useKakaoLoader({
         appkey: process.env.NEXT_PUBLIC_KAKAO_KEY?.toString() || '',
     });
+
+    const { lat, lng } = JSON.parse(location);
     const [userLocation, setUserLocation] = useState<IGeolocation>({
         center: {
             lat: 0,
@@ -49,7 +51,10 @@ export default function PostMap({ lat, lng }: IPostMap) {
 
     return (
         <>
-            <div className='w-screen h-[500px] relative'>
+            <Typography variant='h4' className='font-semibold'>
+                장소
+            </Typography>
+            <div className='w-full h-[500px] relative'>
                 <Map
                     // zoomable={false}
                     center={center}

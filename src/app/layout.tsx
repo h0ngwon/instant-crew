@@ -2,6 +2,7 @@
 import Header from '@/components/Header';
 import { Inter } from 'next/font/google';
 import { RecoilRoot } from 'recoil';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './globals.css';
 import './reset.css';
 
@@ -17,16 +18,19 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
+    const queryClient = new QueryClient();
     return (
-        <RecoilRoot>
-            <html lang='kr'>
-                <body>
-                    <section>
-                        <Header />
-                        {children}
-                    </section>
-                </body>
-            </html>
-        </RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+            <RecoilRoot>
+                <html lang='kr'>
+                    <body>
+                        <section>
+                            <Header />
+                            {children}
+                        </section>
+                    </body>
+                </html>
+            </RecoilRoot>
+        </QueryClientProvider>
     );
 }
