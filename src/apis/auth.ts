@@ -1,31 +1,35 @@
+import { Provider } from '@supabase/supabase-js';
 import { supabase } from './dbApi';
 import { v4 as uuidv4 } from 'uuid';
+import { Url } from 'next/dist/shared/lib/router/router';
 
 export interface authInput {
     email: string;
     password: string;
     passwordCheck: string;
     nickname: string;
+    profile_pic: string;
 }
 
 // 회원가입
-export const signUp = async ({ email, password, nickname }: authInput) => {
-    const avatar_url =
-        'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26470D3654FC08C40C';
-    const uuid = uuidv4();
-
-    const { error } = await supabase.auth.signUp({
+export const signUp = async ({
+    email,
+    password,
+    nickname,
+    profile_pic,
+}: authInput) => {
+    const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
             data: {
                 nickname,
-                id: uuid,
-                avatar_url,
+                profile_pic,
             },
         },
     });
-    return { error };
+
+    return { data, error };
 };
 
 // 로그인
@@ -43,13 +47,10 @@ export const signIn = async ({
 
 // 구글 로그인
 export const googleSignIn = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { data: response, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: {
-            redirectTo: 'http://localhost:3000/',
-        },
     });
-    return { data, error };
+    return { response, error };
 };
 
 // 로그아웃
@@ -66,6 +67,7 @@ export const getUser = async () => {
     const {
         data: { user },
     } = await supabase.auth.getUser();
-    console.log({ user });
+    console.log(user);
+    return { user };
     // return user;
 };

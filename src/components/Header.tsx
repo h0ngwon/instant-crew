@@ -7,7 +7,7 @@ import Register from './Register';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { modalState } from '@/recoil/modalAtom';
 import { userState } from '@/recoil/authAtom';
-import { signOut } from '@/apis/auth';
+import { getUser, signOut } from '@/apis/auth';
 import { supabase } from '@/apis/dbApi';
 
 const Header = () => {
@@ -29,12 +29,26 @@ const Header = () => {
     };
 
     useEffect(() => {
-        supabase.auth.onAuthStateChange((event, session) => {
+        supabase.auth.onAuthStateChange(async (event, session) => {
             if (event === 'SIGNED_IN') {
                 setUserInfo({
                     session,
                     // user: undefined,
                 });
+
+                const { user } = await getUser();
+                console.log(user);
+                // user table에서 요구하는 스키마랑 들어가는 데이터랑 타입이 일치하지 않아서 생긴 에러
+                const { error } = await supabase.from('user').insert({
+                    email: session?.user.user_metadata.email,
+                    password: '12345',
+                    nickname: session?.user.user_metadata.full_name,
+                    profile_pic: session?.user.user_metadata.avatar_url,
+                });
+                if (error) {
+                    console.error('supabase error', error);
+                }
+
                 console.log(session, event);
             }
         });
@@ -86,6 +100,9 @@ const Header = () => {
                             <>
                                 <li>
                                     <Button onClick={logout}>로그아웃</Button>
+                                    <Button onClick={() => getUser()}>
+                                        유저정보
+                                    </Button>
                                 </li>
                             </>
                         )}
