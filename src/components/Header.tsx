@@ -9,6 +9,7 @@ import { modalState } from '@/recoil/modalAtom';
 import { userState } from '@/recoil/authAtom';
 import { signOut } from '@/apis/auth';
 import { supabase } from '@/apis/dbApi';
+import { toast } from 'react-toastify';
 
 const Header = () => {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -26,8 +27,13 @@ const Header = () => {
     };
 
     const logout = () => {
-        signOut();
-        clearUserInfo();
+        try {
+            signOut();
+            clearUserInfo();
+            toast.success('로그아웃되었습니다');
+        } catch (error) {
+            toast.error('다시 한 번 시도해주세요');
+        }
     };
 
     useEffect(() => {
