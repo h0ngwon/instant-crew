@@ -3,8 +3,14 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { useForm } from 'react-hook-form';
 import { authInput, signUp } from '@/apis/auth';
+import { toast } from 'react-toastify';
+import { useSetRecoilState } from 'recoil';
+import { modalState } from '@/recoil/modalAtom';
+import { supabase } from '@/apis/dbApi';
 
 const Register = () => {
+    const setShowModal = useSetRecoilState(modalState);
+
     // react-hook-form
     const {
         register, // onchage, onblur, onclick등 가진 객체 생성
@@ -25,7 +31,25 @@ const Register = () => {
             );
             return;
         }
-        await signUp(data);
+
+        const profile_pic =
+            'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26470D3654FC08C40C';
+
+        const { data: signUpInfo, error } = await signUp(data);
+        if (error) {
+            toast.error('이미 존재하는 이메일입니다');
+            return;
+        }
+
+        await supabase.from('user').insert({
+            email: data.email,
+            password: data.password,
+            nickname: data.nickname,
+            profile_pic,
+        });
+
+        toast.success('회원가입 성공!');
+        setShowModal({ show: false });
     };
 
     return (

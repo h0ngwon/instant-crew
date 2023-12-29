@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { modalState } from '@/recoil/modalAtom';
+import { useRecoilState } from 'recoil';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -24,16 +26,15 @@ type Props = {
 };
 
 export default function BasicModal({ title, buttonName, children }: Props) {
-    const [open, setOpen] = React.useState(false);
+    const [showModal, setShowModal] = useRecoilState(modalState);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => setShowModal({ show: false, key: title });
 
     return (
-        <div>
-            <Button onClick={handleOpen}>{title}</Button>
+        <>
+            {/* <Button onClick={handleOpen}>{title}</Button> */}
             <Modal
-                open={open}
+                open={showModal.show}
                 onClose={handleClose}
                 aria-labelledby='modal-modal-title'
                 aria-describedby='modal-modal-description'
@@ -50,8 +51,14 @@ export default function BasicModal({ title, buttonName, children }: Props) {
                     <Typography id='modal-modal-description' sx={{ mt: 2 }}>
                         {children}
                     </Typography>
+                    <Button
+                        onClick={handleClose}
+                        className='absolute top-2 right-2'
+                    >
+                        ❌
+                    </Button>
                 </Box>
             </Modal>
-        </div>
+        </>
     );
 }
