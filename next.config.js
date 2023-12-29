@@ -7,6 +7,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'a.cdn-hotels.com',
             },
+            {
+                protocol: 'https',
+                hostname: 'rummvqozlgllyttgdnqh.supabase.co',
+            },
         ],
     },
 };

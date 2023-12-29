@@ -6,54 +6,56 @@ import ImgPrivew from './ImgPrivew';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Button } from '@mui/material';
 import axios from 'axios';
+import { v4 as uuid } from 'uuid';
 export interface ITextFields {
     title: string;
     category: '맛집' | '문화예술' | '스터디' | '운동';
     date: Date | null;
     content: string;
-    url: string;
     file: File;
     location: { lat: number; lng: number };
 }
 
 export default function CreatePostForm() {
     const methods = useForm<ITextFields>();
-    async function submit(data: ITextFields) {
-        const { title, category, date, content, url, file, location } = data;
-        const test = await fetch('/api/test', { method: 'get' });
-        console.log(test);
-        const newtest = await test.json();
-        console.log(newtest);
 
-        console.log(data);
+    async function submit(data: ITextFields) {
+        const id = uuid();
+        const { title, category, date, content, file, location } = data;
         if (!date) console.log('날짜가 없습니다.');
         if (!location) console.log('위치정보가 없습니다.');
         if (!file) console.log('사진이 없습니다.');
 
-        // const downloadUrl = await uploadStorage(file);
-        // console.log(downloadUrl);
+        const picture = await uploadStorage(file, id);
 
-        axios.post('/api/post', data);
+        const response = await axios.post(
+            '/api/post',
+            { ...data, picture, id },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            },
+        );
+
+        console.log(response);
     }
 
-    async function uploadStorage(file: File) {
+    async function uploadStorage(file: File, path: string) {
         if (!file) {
             return;
         }
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('path', path);
 
-        try {
-            const response = await axios.post('/api/storage', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+        const response = await axios.post('/api/storage', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
-            console.log(response);
-        } catch (error) {
-            console.error(error);
-        }
+        return response.data.publicUrl;
     }
 
     return (
