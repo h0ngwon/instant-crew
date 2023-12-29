@@ -20,7 +20,6 @@ export const getRecommendData = async (): Promise<NextResponse<Data[]>> => {
         const { data, error } = await supabase
             .from('random_post')
             .select('*')
-            .order('id', { ascending: false })
             .limit(2);
         if (error) throw new Error();
         return NextResponse.json(data);
