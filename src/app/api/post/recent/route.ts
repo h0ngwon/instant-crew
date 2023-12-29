@@ -1,26 +1,16 @@
 import { supabase } from '@/app/api/dbApi';
 import { NextResponse } from 'next/server';
-
-export type Data = {
-    category: string;
-    content: string;
-    created_at: string;
-    date: string;
-    id: string;
-    location: string | null;
-    picture: string | null;
-    title: string;
-    user_id: string | null;
-}[];
+import { Data } from '../recommend/route';
 
 export type RecommendData = NextResponse<Data[]>;
 
-export const getRecommendData = async (): Promise<NextResponse<Data[]>> => {
+export const getRecentData = async (): Promise<NextResponse<Data[]>> => {
     try {
         const { data, error } = await supabase
             .from('random_post')
             .select('*')
-            .limit(2);
+            .order('created_at', { ascending: false })
+            .limit(4);
         if (error) throw new Error();
         return NextResponse.json(data);
     } catch (err) {
@@ -30,7 +20,7 @@ export const getRecommendData = async (): Promise<NextResponse<Data[]>> => {
 
 export const GET = async (): Promise<RecommendData> => {
     try {
-        const data: RecommendData = await getRecommendData();
+        const data: RecommendData = await getRecentData();
         return data;
     } catch (error) {
         throw new Error();
