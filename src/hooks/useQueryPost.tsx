@@ -13,6 +13,7 @@ export interface IPost {
 }
 export default function useQueryPost(postid?: string) {
     const queryClient = useQueryClient();
+    console.log(postid);
     const { data, error, isLoading } = useQuery<IPost[]>({
         queryFn: async () => {
             const response = await axios.get(
