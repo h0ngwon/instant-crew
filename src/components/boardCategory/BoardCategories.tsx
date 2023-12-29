@@ -14,7 +14,7 @@ const BoardCategories = ({ category }: Props) => {
     ];
 
     return (
-        <div className='flex gap-[150px] justify-center'>
+        <div className='flex gap-[150px] justify-center h-[100px] mt-[50px]'>
             {categoryData.map((item) => (
                 <Link href={`/board?category=${item.name}`} key={item.id}>
                     <h2
