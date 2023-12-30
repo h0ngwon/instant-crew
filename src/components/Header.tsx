@@ -7,9 +7,9 @@ import Register from './Register';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { modalState } from '@/recoil/modalAtom';
 import { userState } from '@/recoil/authAtom';
-import { getUser, signOut } from '@/apis/auth';
+import { signOut } from '@/apis/auth';
 import { supabase } from '@/apis/dbApi';
-import { AuthChangeEvent, Session } from '@supabase/supabase-js';
+import { toast } from 'react-toastify';
 
 const Header = () => {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -19,53 +19,59 @@ const Header = () => {
 
     const clearUserInfo = () => {
         setUserInfo({
-            session: undefined,
-            // user: undefined,
+            id: '',
+            avatar_url: '',
+            full_name: '',
+            email: '',
         });
     };
 
     const logout = () => {
-        signOut();
-        clearUserInfo();
+        try {
+            signOut();
+            clearUserInfo();
+            toast.success('로그아웃되었습니다');
+        } catch (error) {
+            toast.error('다시 한 번 시도해주세요');
+        }
     };
     useEffect(() => {
-        const handleAuthStateChange = async (
-            event: AuthChangeEvent,
-            session: Session | null,
-        ) => {
-            console.log(event);
-            console.log(session);
-            // if(event === "")
-
-            if (event === 'SIGNED_IN') {
+        supabase.auth.onAuthStateChange(async (event, session) => {
+            if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
                 setUserInfo({
-                    session,
+                    id: session?.user.user_metadata?.id || session?.user.id,
+                    avatar_url: session?.user.user_metadata.avatar_url,
+                    full_name: session?.user.user_metadata.full_name,
+                    email:
+                        session?.user.user_metadata?.email ||
+                        session?.user.email,
                     // user: undefined,
                 });
 
-                const { user } = await getUser();
-                console.log(user);
+                // user table에서 요구하는 스키마랑 들어가는 데이터랑 타입이 일치하지 않아서 생긴 에러
                 const { error } = await supabase.from('user').insert({
-                    email: session?.user.user_metadata.email,
-                    password: '12345',
+                    email:
+                        session?.user.user_metadata?.email ||
+                        session?.user.email,
                     nickname: session?.user.user_metadata.full_name,
                     profile_pic: session?.user.user_metadata.avatar_url,
                 });
                 if (error) {
                     console.error('supabase error', error);
                 }
-
-                console.log(session, event);
+                console.log(
+                    {
+                        id: session?.user.user_metadata?.id || session?.user.id,
+                        avatar_url: session?.user.user_metadata.avatar_url,
+                        full_name: session?.user.user_metadata.full_name,
+                        email:
+                            session?.user.user_metadata?.email ||
+                            session?.user.email,
+                    },
+                    event,
+                );
             }
-        };
-
-        const subscription = supabase.auth.onAuthStateChange(
-            handleAuthStateChange,
-        );
-
-        return () => {
-            subscription.data.subscription.unsubscribe();
-        };
+        });
     }, []);
 
     return (
@@ -76,7 +82,7 @@ const Header = () => {
                 </div>
                 <nav role='navigation' aria-label='네비게이션'>
                     <ul className='flex flex-row gap-5 items-center'>
-                        {!userInfo.session ? (
+                        {!userInfo.id ? (
                             <>
                                 <li>
                                     <Button
@@ -114,9 +120,6 @@ const Header = () => {
                             <>
                                 <li>
                                     <Button onClick={logout}>로그아웃</Button>
-                                    <Button onClick={() => getUser()}>
-                                        유저정보
-                                    </Button>
                                 </li>
                             </>
                         )}

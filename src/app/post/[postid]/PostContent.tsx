@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import { TextField, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import { IPost } from '@/hooks/useQueryPost';
+import useQueryPost, { IPost } from '@/hooks/useQueryPost';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 
 interface IProps {
     data: IPost;
@@ -21,6 +22,19 @@ export default function PostContent({ data }: IProps) {
         title,
         user_id,
     } = data;
+
+    const { deletePost } = useQueryPost();
+
+    function onClickDelete() {
+        deletePost.mutate(id);
+    }
+
+    useEffect(() => {
+        if (deletePost.isSuccess) {
+            console.log('Delete successful');
+            redirect('../');
+        }
+    }, [deletePost.isSuccess]);
 
     return (
         <>
@@ -40,6 +54,13 @@ export default function PostContent({ data }: IProps) {
                     variant='contained'
                 >
                     참여하기
+                </Button>
+                <Button
+                    onClick={onClickDelete}
+                    className='text-black hover:bg-transparent rounded-lg'
+                    variant='contained'
+                >
+                    삭제하기(테스트)
                 </Button>
             </div>
             <Image

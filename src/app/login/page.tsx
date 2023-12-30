@@ -6,7 +6,7 @@ import Login from '@/components/Login';
 import { useRecoilState } from 'recoil';
 import { userState } from '@/recoil/authAtom';
 import { Button } from '@mui/material';
-import { signOut } from '@/apis/auth';
+import { signOut, test } from '@/apis/auth';
 import { getUser } from '../../apis/auth';
 
 const LoginPage = () => {
@@ -24,7 +24,8 @@ const LoginPage = () => {
     };
 
     React.useEffect(() => {
-        getUser();
+        console.log(userInfo);
+        test();
     }, []);
 
     return (

@@ -40,9 +40,9 @@ export default function useQueryPost(postid?: string) {
             console.log(error);
         },
     });
-    const { mutate: deletePost } = useMutation({
+    const deletePost = useMutation({
         mutationFn: async (postid: string) => {
-            const response = await axios.post(`/api/post/${postid}`);
+            const response = await axios.delete(`/api/post/${postid}`);
             return response;
         },
         onSuccess: () => {

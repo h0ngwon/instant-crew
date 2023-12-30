@@ -27,7 +27,15 @@ export const DELETE = async (
     } = context;
 
     const { error } = await supabase.from('post').delete().eq('id', postid);
-    const { data, error: storageError } = await supabase.storage
-        .from('post')
-        .remove([`${postid}/picture`]);
+
+    if (error) {
+        // 실패시 에러
+        return new Response(JSON.stringify({ error }), { status: 400 });
+    } else {
+        const { data, error: storageError } = await supabase.storage
+            .from('post')
+            .remove([`${postid}/picture`]);
+
+        return NextResponse.json(data);
+    }
 };
