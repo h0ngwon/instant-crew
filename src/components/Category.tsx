@@ -4,6 +4,7 @@ import { Card, CardActionArea, CardContent } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 import staticData from '../../static.json';
+import Link from 'next/link';
 
 const Category = () => {
     const banner: {
@@ -18,15 +19,17 @@ const Category = () => {
                 {banner.map((item) => {
                     return (
                         <Card key={item.id} className='w-[200px]'>
-                            <CardActionArea className='flex flex-col justify-center items-center'>
-                                <Image
-                                    src={item.url}
-                                    width={100}
-                                    height={50}
-                                    alt='w'
-                                />
-                                <CardContent>{item.content}</CardContent>
-                            </CardActionArea>
+                            <Link href={`/board/?category=${item.content}`}>
+                                <CardActionArea className='flex flex-col justify-center items-center'>
+                                    <Image
+                                        src={item.url}
+                                        width={100}
+                                        height={50}
+                                        alt='w'
+                                    />
+                                    <CardContent>{item.content}</CardContent>
+                                </CardActionArea>
+                            </Link>
                         </Card>
                     );
                 })}
