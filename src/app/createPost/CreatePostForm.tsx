@@ -29,13 +29,16 @@ export default function CreatePostForm() {
         if (!file) console.log('사진이 없습니다.');
         const picture = await uploadStorage(file, id);
 
-        createPost({
+        createPost.mutate({
             Row: {
                 ...data,
                 id,
                 picture,
             },
         });
+
+        console.log(createPost.data);
+        console.log(createPost.isSuccess);
     }
 
     async function uploadStorage(file: File, path: string) {
@@ -45,7 +48,7 @@ export default function CreatePostForm() {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('path', path);
-        formData.append('buckets', '');
+        formData.append('bucket', 'post');
 
         const response = await axios.post('/api/storage', formData, {
             headers: {

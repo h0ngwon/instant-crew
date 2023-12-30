@@ -17,3 +17,17 @@ export const GET = async (
 
     return NextResponse.json(post);
 };
+
+export const DELETE = async (
+    req: NextRequest,
+    context: { params: { postid: string } },
+) => {
+    const {
+        params: { postid },
+    } = context;
+
+    const { error } = await supabase.from('post').delete().eq('id', postid);
+    const { data, error: storageError } = await supabase.storage
+        .from('post')
+        .remove([`${postid}/picture`]);
+};
