@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import Modal from './Modal';
 import Login from './Login';
 import Register from './Register';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { modalState } from '@/recoil/modalAtom';
 import { userState } from '@/recoil/authAtom';
 import { signOut } from '@/apis/auth';
@@ -17,19 +17,9 @@ const Header = () => {
     const handleOpen = (title: string) =>
         setShowModal({ show: true, key: title });
 
-    const clearUserInfo = () => {
-        setUserInfo({
-            id: '',
-            avatar_url: '',
-            full_name: '',
-            email: '',
-        });
-    };
-
     const logout = () => {
         try {
             signOut();
-            clearUserInfo();
             toast.success('로그아웃되었습니다');
         } catch (error) {
             toast.error('다시 한 번 시도해주세요');
@@ -71,6 +61,15 @@ const Header = () => {
                     },
                     event,
                 );
+            } else if (event === 'SIGNED_OUT') {
+                setUserInfo({
+                    id: '',
+                    avatar_url: '',
+                    full_name: '',
+                    email: '',
+                });
+                console.log(event, session);
+                console.log(userInfo.id);
             }
         });
     }, []);
