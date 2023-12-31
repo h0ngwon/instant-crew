@@ -14,6 +14,7 @@ export type PostType = {
     picture: string | null;
     title: string;
     user_id: string | null;
+    address: string;
 };
 
 export default function BoardMain({ category }: { category?: string }) {
@@ -83,7 +84,7 @@ export default function BoardMain({ category }: { category?: string }) {
                     </div>
                     <div className='float-left w-[170px]'>
                         <h1 className='my-[20px] text-[1.3rem] font-bold'>
-                            {item.location}
+                            {item.address}
                         </h1>
                         <div className='my-[10px] h-[40px] truncate'>
                             {item.title}
