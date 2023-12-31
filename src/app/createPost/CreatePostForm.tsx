@@ -8,6 +8,8 @@ import { Button } from '@mui/material';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import useQueryPost from '@/hooks/useQueryPost';
+import { useRecoilState } from 'recoil';
+import { userState } from '@/recoil/authAtom';
 export interface ITextFields {
     title: string;
     category: '맛집' | '문화예술' | '스터디' | '운동';
@@ -20,6 +22,9 @@ export interface ITextFields {
 export default function CreatePostForm() {
     const methods = useForm<ITextFields>();
     const { createPost } = useQueryPost();
+    const [userInfo, setUserInfo] = useRecoilState(userState);
+
+    console.log(userInfo);
 
     async function submit(data: ITextFields) {
         const id = uuid();
@@ -58,6 +63,7 @@ export default function CreatePostForm() {
                 id,
                 picture,
                 address,
+                user_id: userInfo.id,
             },
         });
     }
