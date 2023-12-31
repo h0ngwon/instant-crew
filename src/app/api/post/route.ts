@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 }
 const PAGE_SIZE = 6;
-export const GET_POST_BY_PAGE = async (page: number = 0) => {
+export const getPostByPage = async (page: number = 0) => {
     const { data, count } = await supabase
         .from('post')
         .select('', { count: 'exact' })
@@ -41,7 +41,7 @@ export const GET_POST_BY_PAGE = async (page: number = 0) => {
     return data as PostType[];
 };
 
-export const GET_POST_BY_PAGE_AND_CATEGORY = async (
+export const getPostByPageAndCategory = async (
     page: number = 0,
     category?: string,
 ) => {
@@ -54,5 +54,5 @@ export const GET_POST_BY_PAGE_AND_CATEGORY = async (
         //@ts-ignore
         return data as PostType[];
     }
-    return await GET_POST_BY_PAGE(page);
+    return await getPostByPage(page);
 };
