@@ -2,14 +2,13 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { useForm } from 'react-hook-form';
-import { authInput, getUser, googleSignIn, signIn } from '@/apis/auth';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { authInput, googleSignIn, signIn } from '@/apis/auth';
+import { useSetRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
 import { modalState } from '@/recoil/modalAtom';
-import { userState } from '@/recoil/authAtom';
+import axios from 'axios';
 
 const Login = () => {
-    const userInfo = useRecoilValue(userState);
     const setShowModal = useSetRecoilState(modalState);
     const {
         register,
