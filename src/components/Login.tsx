@@ -6,6 +6,7 @@ import { authInput, googleSignIn, signIn } from '@/apis/auth';
 import { useSetRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
 import { modalState } from '@/recoil/modalAtom';
+import axios from 'axios';
 
 const Login = () => {
     const setShowModal = useSetRecoilState(modalState);

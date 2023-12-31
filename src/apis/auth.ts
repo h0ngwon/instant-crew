@@ -64,7 +64,6 @@ export const getUser = async () => {
     } = await supabase.auth.getUser();
     console.log(user);
     return { user };
-    // return user;
 };
 
 export const test = async () => {
