@@ -5,6 +5,7 @@ import {
     GET_POST_BY_PAGE,
     GET_POST_BY_PAGE_AND_CATEGORY,
 } from '@/app/api/post/route';
+import dayjs from 'dayjs';
 
 export type PostType = {
     category: string;
@@ -62,6 +63,11 @@ export default function BoardMain({ category }: { category?: string }) {
         };
     }, []);
 
+    const postTime = (createat: string) => {
+        const date = dayjs(createat).format('YY.MM.DD HH:mm');
+        return date;
+    };
+
     return (
         <main className='max-w-[1200px] m-auto grid grid-cols-2 gap-[50px] p-10 h-max'>
             {posts.map((item, index) => (
@@ -85,7 +91,7 @@ export default function BoardMain({ category }: { category?: string }) {
                         <div className='my-[10px] h-[40px] truncate'>
                             {item.title}
                         </div>
-                        <div>{item.created_at}</div>
+                        <div>{postTime(item.created_at)}</div>
                     </div>
                 </div>
             ))}
