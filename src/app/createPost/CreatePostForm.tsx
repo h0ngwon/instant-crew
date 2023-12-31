@@ -27,18 +27,39 @@ export default function CreatePostForm() {
         if (!date) console.log('날짜가 없습니다.');
         if (!location) console.log('위치정보가 없습니다.');
         if (!file) console.log('사진이 없습니다.');
+
+        const geocoder = new kakao.maps.services.Geocoder();
+        let coord = new kakao.maps.LatLng(location.lat, location.lng);
+
+        // 주소가져오기
+        const address = await new Promise<string>((resolve, reject) => {
+            geocoder.coord2Address(
+                coord.getLng(),
+                coord.getLat(),
+                (result: any, status: any) => {
+                    if (status === kakao.maps.services.Status.OK) {
+                        const arr = { ...result };
+                        const _arr = arr[0].address.address_name;
+                        resolve(_arr);
+                    } else {
+                        reject(new Error('주소 변환 실패'));
+                    }
+                },
+            );
+        });
+
+        // 사진가져오기
         const picture = await uploadStorage(file, id);
 
+        // 업로드하기
         createPost.mutate({
             Row: {
                 ...data,
                 id,
                 picture,
+                address,
             },
         });
-
-        console.log(createPost.data);
-        console.log(createPost.isSuccess);
     }
 
     async function uploadStorage(file: File, path: string) {

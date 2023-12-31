@@ -59,6 +59,7 @@ export interface Database {
                     picture: string | null;
                     title: string;
                     user_id: string | null;
+                    address: string;
                 };
                 Insert: {
                     category: string;
