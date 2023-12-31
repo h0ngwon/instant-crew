@@ -4,9 +4,7 @@ import { supabase } from '@/apis/dbApi';
 
 export const GET = async () => {
     let { data: post, error } = await supabase.from('post').select('*');
-    // return NextResponse.json(post);
-    return post;
-    // return new Response(JSON.stringify(post), { status: 200 });
+    return NextResponse.json(post);
 };
 
 export async function POST(req: NextRequest) {

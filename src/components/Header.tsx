@@ -26,7 +26,6 @@ const Header = () => {
             toast.error('다시 한 번 시도해주세요');
         }
     };
-
     useEffect(() => {
         supabase.auth.onAuthStateChange(async (event, session) => {
             if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {

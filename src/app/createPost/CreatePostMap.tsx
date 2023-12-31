@@ -75,8 +75,9 @@ export default function CreatePostMap() {
     }
 
     return (
-        <Card className='relative w-full h-[500px]'>
+        <Card className='relative w-full h-[500px] '>
             <Map
+                className={`${newMarker.active && '[&_svg]:cursor-pointer'}`}
                 zoomable={false}
                 center={currentLocation.center}
                 style={{ width: '100%', height: '500px' }}
