@@ -30,7 +30,7 @@ const Header = () => {
         supabase.auth.onAuthStateChange(async (event, session) => {
             if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
                 setUserInfo({
-                    id: session?.user.user_metadata?.id || session?.user.id,
+                    id: session?.user.id || session?.user.user_metadata?.id,
                     avatar_url: session?.user.user_metadata.avatar_url,
                     full_name: session?.user.user_metadata.full_name,
                     email:
@@ -41,6 +41,7 @@ const Header = () => {
 
                 // user table에서 요구하는 스키마랑 들어가는 데이터랑 타입이 일치하지 않아서 생긴 에러
                 const { error } = await supabase.from('user').insert({
+                    id: session?.user.id,
                     email:
                         session?.user.user_metadata?.email ||
                         session?.user.email,
