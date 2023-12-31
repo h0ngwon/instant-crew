@@ -9,6 +9,7 @@ import { modalState } from '@/recoil/modalAtom';
 import { userState } from '@/recoil/authAtom';
 import { getUser, signOut } from '@/apis/auth';
 import { supabase } from '@/apis/dbApi';
+import SearchForm from './SearchForm';
 
 const Header = () => {
     const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -62,6 +63,9 @@ const Header = () => {
                 </div>
                 <nav role='navigation' aria-label='네비게이션'>
                     <ul className='flex flex-row gap-5 items-center'>
+                        <li>
+                            <SearchForm />
+                        </li>
                         {!userInfo.session ? (
                             <>
                                 <li>
