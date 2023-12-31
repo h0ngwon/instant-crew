@@ -62,10 +62,6 @@ export default function BoardMain({ category }: { category?: string }) {
         };
     }, []);
 
-    const createTime = (createtime: string) => {
-        return createtime.slice(0, 16).replace('T', ' ');
-    };
-
     return (
         <main className='max-w-[1200px] m-auto grid grid-cols-2 gap-[50px] p-10 h-max'>
             {posts.map((item, index) => (
@@ -89,7 +85,7 @@ export default function BoardMain({ category }: { category?: string }) {
                         <div className='my-[10px] h-[40px] truncate'>
                             {item.title}
                         </div>
-                        <div>{createTime(item.created_at)}</div>
+                        <div>{item.created_at}</div>
                     </div>
                 </div>
             ))}
