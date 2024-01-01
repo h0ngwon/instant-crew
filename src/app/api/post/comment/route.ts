@@ -18,15 +18,3 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(data);
     }
 }
-
-export async function GET(req: NextRequest) {
-    const { data, error } = await supabase.from('comment').select();
-
-    if (error) {
-        return new Response(JSON.stringify({ message: error }), {
-            status: 500,
-        });
-    } else {
-        return NextResponse.json(data);
-    }
-}

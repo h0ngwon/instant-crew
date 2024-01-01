@@ -1,17 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-
-const useQueryComment = () => {
+export interface IComment {
+    id: string;
+    created_at: string;
+    content: string;
+    user_id: string;
+    post_id: string;
+}
+const useQueryComment = (postid: string) => {
     //1. mutation을 사용한다.
     const queryClient = useQueryClient();
     // 불러올때
-    // const {data, error, isError, isLoading} = useQuery();
-    const { data, error, isLoading } = useQuery({
+    const { data, error, isLoading } = useQuery<IComment[]>({
         queryFn: async () => {
-            const response = await axios.get('/api/post/comment');
+            const response = await axios.get(`/api/post/comment/${postid}`);
             return response.data;
         },
-        queryKey: ['post'],
+        queryKey: ['comment', postid],
     });
 
     // 등록, 수정, 삭제 할 때
@@ -35,7 +40,7 @@ const useQueryComment = () => {
 
     //2. useQuery로 comment를 가져온다.
 
-    return { postComment: data, error, isLoading, createComment };
+    return { getComment: data, createComment };
 };
 
 export default useQueryComment;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, TextField } from '@mui/material';
 import { IPost } from '@/hooks/useQueryPost';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import useQueryComment from '@/hooks/useQuetyComment';
+import useQueryComment from '@/hooks/useQueryComment';
 
 interface IProps {
     postData: IPost;
@@ -13,7 +13,7 @@ interface ICommentFormInput {
 export default function PostCommentForm({ postData }: IProps) {
     const { user_id, id: post_id } = postData;
 
-    const { createComment } = useQueryComment();
+    const { createComment } = useQueryComment(post_id);
 
     const { register, handleSubmit } = useForm({
         defaultValues: {

@@ -10,9 +10,11 @@ export interface IPost {
     picture: string;
     title: string;
     user_id: string;
+    address: string;
 }
 export default function useQueryPost(postid?: string) {
     const queryClient = useQueryClient();
+
     const { data, error, isLoading } = useQuery<IPost[]>({
         queryFn: async () => {
             const response = await axios.get(
@@ -20,7 +22,7 @@ export default function useQueryPost(postid?: string) {
             );
             return response.data;
         },
-        queryKey: ['post'],
+        queryKey: postid ? ['post', { postid }] : ['post'],
     });
 
     const createPost = useMutation({
@@ -53,5 +55,29 @@ export default function useQueryPost(postid?: string) {
         },
     });
 
-    return { post: data, error, loading: isLoading, createPost, deletePost };
+    const modifyPost = useMutation({
+        mutationFn: async ({ postid, Row }: any) => {
+            const response = await axios.put(`/api/post/${postid}`, Row, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            return response;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['post', postid] });
+        },
+        onError: (error) => {
+            console.log(error);
+        },
+    });
+
+    return {
+        post: data,
+        error,
+        loading: isLoading,
+        createPost,
+        deletePost,
+        modifyPost,
+    };
 }

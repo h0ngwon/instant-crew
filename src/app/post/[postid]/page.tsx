@@ -2,10 +2,10 @@
 import React from 'react';
 import PostMap from './PostMap';
 import useQueryPost from '@/hooks/useQueryPost';
-import PostContent from './PostContent';
 import PostComment from './PostComment';
 import PostCommentForm from './PostCommentForm';
 import { redirect } from 'next/navigation';
+import PostWriter from './PostWriter';
 interface IPostPage {
     params: { postid: string };
 }
@@ -23,9 +23,9 @@ export default function PostPage({ params: { postid } }: IPostPage) {
                 <>로딩중</>
             ) : (
                 <>
-                    <PostContent data={{ ...post![0] }} />
-                    <PostMap location={post![0].location} />
-                    <PostComment data={post![0]} />
+                    <PostWriter data={{ ...post![0] }} />
+                    <PostMap data={{ ...post![0] }} />
+                    <PostComment postData={post![0]} />
                     <PostCommentForm postData={{ ...post![0] }} />
                 </>
             )}
