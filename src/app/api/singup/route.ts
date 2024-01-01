@@ -28,8 +28,11 @@ const signUp = async ({ email, password, nickname }: authInput) => {
     return { data, error };
 };
 
-export async function POST(req: NextApiRequest) {
-    const { data, error } = req.body;
+export async function POST(req: NextRequest) {
+    const { data, error } = await req.json();
 
-    await signUp(data);
+    const test = await signUp(data);
+    console.log(test);
+
+    return NextResponse.json(test);
 }

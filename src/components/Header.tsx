@@ -26,6 +26,7 @@ const Header = () => {
             toast.error('다시 한 번 시도해주세요');
         }
     };
+
     useEffect(() => {
         supabase.auth.onAuthStateChange(async (event, session) => {
             if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
@@ -107,6 +108,11 @@ const Header = () => {
                         ) : (
                             <>
                                 <li>
+                                    <Button>
+                                        <Link href={userInfo.id}>
+                                            마이페이지
+                                        </Link>
+                                    </Button>
                                     <Button onClick={logout}>로그아웃</Button>
                                 </li>
                             </>
