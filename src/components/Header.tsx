@@ -30,42 +30,26 @@ const Header = () => {
         supabase.auth.onAuthStateChange(async (event, session) => {
             if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
                 setUserInfo({
-                    id: session?.user.id || session?.user.user_metadata?.id,
-                    avatar_url: session?.user.user_metadata.avatar_url,
+                    id: session?.user.id!,
+                    profile_pic: session?.user.user_metadata.avatar_url,
                     full_name: session?.user.user_metadata.full_name,
-                    email:
-                        session?.user.user_metadata?.email ||
-                        session?.user.email,
-                    // user: undefined,
+                    email: session?.user.email!,
                 });
 
                 // user table에서 요구하는 스키마랑 들어가는 데이터랑 타입이 일치하지 않아서 생긴 에러
                 const { error } = await supabase.from('user').insert({
                     id: session?.user.id,
-                    email:
-                        session?.user.user_metadata?.email ||
-                        session?.user.email,
+                    email: session?.user.email!,
                     nickname: session?.user.user_metadata.full_name,
                     profile_pic: session?.user.user_metadata.avatar_url,
                 });
                 if (error) {
                     console.error('supabase error', error);
                 }
-                console.log(
-                    {
-                        id: session?.user.user_metadata?.id || session?.user.id,
-                        avatar_url: session?.user.user_metadata.avatar_url,
-                        full_name: session?.user.user_metadata.full_name,
-                        email:
-                            session?.user.user_metadata?.email ||
-                            session?.user.email,
-                    },
-                    event,
-                );
             } else if (event === 'SIGNED_OUT') {
                 setUserInfo({
                     id: '',
-                    avatar_url: '',
+                    profile_pic: '',
                     full_name: '',
                     email: '',
                 });
