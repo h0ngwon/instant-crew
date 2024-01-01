@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import PostMap from '@/components/common/PostMap';
 import PostTextfields from '@/components/common/PostTextfields';
 import PostImgPrivew from '@/components/common/PostImgPrivew';
+import { redirect } from 'next/navigation';
 
 export interface ITextFields {
     title: string;
@@ -21,10 +22,16 @@ export interface ITextFields {
     location: { lat: number; lng: number };
 }
 
-export default function CreatePostPage() {
+interface IPostPage {
+    params: { postid: string };
+}
+
+export default function CreatePostPage({ params: { postid } }: IPostPage) {
+    const { post, loading, error } = useQueryPost(postid);
+
     const methods = useForm<ITextFields>();
 
-    const { createPost } = useQueryPost();
+    const { modifyPost } = useQueryPost();
     const [userInfo, setUserInfo] = useRecoilState(userState);
 
     async function submit(data: ITextFields) {
@@ -58,7 +65,8 @@ export default function CreatePostPage() {
         const picture = await uploadStorage(file, id);
 
         // 업로드하기
-        createPost.mutate({
+        modifyPost.mutate({
+            postid,
             Row: {
                 ...data,
                 id,
@@ -94,11 +102,16 @@ export default function CreatePostPage() {
                     className='flex flex-col gap-4 p-4'
                     onSubmit={methods.handleSubmit(submit)}
                 >
-                    <PostMap />
-                    <div className='flex gap-4'>
-                        <PostImgPrivew />
-                        <PostTextfields />
-                    </div>
+                    {loading && <>로딩중</>}
+                    {post && (
+                        <>
+                            <PostMap location={post[0].location} />
+                            <div className='flex gap-4'>
+                                <PostImgPrivew currentUrl={post[0].picture} />
+                                <PostTextfields data={post[0]} />
+                            </div>
+                        </>
+                    )}
                     <div className='flex justify-center gap-8'>
                         <Button
                             type='submit'

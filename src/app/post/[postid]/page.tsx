@@ -2,9 +2,10 @@
 import React from 'react';
 import PostMap from './PostMap';
 import useQueryPost from '@/hooks/useQueryPost';
-import PostContent from './PostContent';
 import PostComment from './PostComment';
 import PostCommentForm from './PostCommentForm';
+import { redirect } from 'next/navigation';
+import PostWriter from './PostWriter';
 interface IPostPage {
     params: { postid: string };
 }
@@ -12,11 +13,9 @@ interface IPostPage {
 export default function PostPage({ params: { postid } }: IPostPage) {
     const { post, loading, error } = useQueryPost(postid);
 
-    // if (!loading && !post) {
-    //     return redirect('../');
-    // }
-
-    console.log(post);
+    if (!loading && !post) {
+        return redirect('../');
+    }
 
     return (
         <section className='bg-white w-full min-h-screen flex flex-col gap-4 p-4 text-black'>
@@ -24,8 +23,8 @@ export default function PostPage({ params: { postid } }: IPostPage) {
                 <>로딩중</>
             ) : (
                 <>
-                    <PostContent data={{ ...post![0] }} />
-                    <PostMap location={post![0].location} />
+                    <PostWriter data={{ ...post![0] }} />
+                    <PostMap data={{ ...post![0] }} />
                     <PostComment data={post![0]} />
                     <PostCommentForm data={{ ...post![0] }} />
                 </>

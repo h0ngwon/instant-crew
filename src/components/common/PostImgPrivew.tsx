@@ -4,9 +4,21 @@ import Image from 'next/image';
 import React, { ChangeEvent, useRef, useState } from 'react';
 import ImageIcon from '@mui/icons-material/Image';
 import { useFormContext } from 'react-hook-form';
-export default function ImgPrivew() {
+
+interface IProps {
+    currentUrl?: string;
+}
+
+export default function PostImgPrivew({ currentUrl }: IProps) {
     const [file, setFile] = useState<null | File>(null);
-    const [url, setUrl] = useState<string | null>();
+    const [url, setUrl] = useState<string | null>(() => {
+        if (currentUrl) {
+            return currentUrl;
+        } else {
+            return null;
+        }
+    });
+
     const fileRef = useRef<HTMLInputElement>(null);
     const { setValue } = useFormContext();
 

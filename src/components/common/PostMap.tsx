@@ -10,7 +10,12 @@ import { useFormContext } from 'react-hook-form';
 import { useKakaoLoader } from 'react-kakao-maps-sdk';
 import { Card } from '@mui/material';
 
-export default function CreatePostMap() {
+interface IProps {
+    location?: string;
+}
+
+export default function PostMap({ location }: IProps) {
+    // const current = JSON.parse(location!);
     // 카카오 로더
     const [loading, error] = useKakaoLoader({
         appkey: process.env.NEXT_PUBLIC_KAKAO_KEY?.toString() || '',
@@ -19,19 +24,41 @@ export default function CreatePostMap() {
     const { setValue } = useFormContext();
 
     // 현재위치
-    const [currentLocation, setCurrentLocation] = useState<IGeolocation>({
-        center: {
-            lat: 1.450701,
-            lng: 1.570667,
-        },
-        errMsg: null,
-        isLoading: true,
+    const [currentLocation, setCurrentLocation] = useState<IGeolocation>(() => {
+        if (location) {
+            const { lat, lng } = JSON.parse(location);
+
+            return {
+                center: {
+                    lat,
+                    lng,
+                },
+                errMsg: null,
+                isLoading: false,
+            };
+        } else {
+            return {
+                center: {
+                    lat: 1.450701,
+                    lng: 1.570667,
+                },
+                errMsg: null,
+                isLoading: true,
+            };
+        }
     });
     // 마커추가
     const [newMarker, setnewMarker] = useState<{
         active: boolean;
         position: null | { lat: number; lng: number };
-    }>({ active: false, position: null });
+    }>(() => {
+        if (location) {
+            const { lat, lng } = JSON.parse(location);
+            return { active: false, position: { lat, lng } };
+        } else {
+            return { active: false, position: null };
+        }
+    });
 
     // 현위치로 지도중심이동
     function resetCurrentLocation() {
@@ -47,8 +74,9 @@ export default function CreatePostMap() {
 
     // 현위치 감지
     useEffect(() => {
+        if (location) return;
         geolocation({ setState: setCurrentLocation });
-    }, []);
+    }, [location]);
 
     // 마커추가기능 활성화
     function onClickMarkerActive() {
@@ -75,8 +103,9 @@ export default function CreatePostMap() {
     }
 
     return (
-        <Card className='relative w-full h-[500px]'>
+        <Card className='relative w-full h-[500px] '>
             <Map
+                className={`${newMarker.active && '[&_svg]:cursor-pointer'}`}
                 zoomable={false}
                 center={currentLocation.center}
                 style={{ width: '100%', height: '500px' }}

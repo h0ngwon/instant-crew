@@ -7,12 +7,12 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const file = formData.get('file') as File;
     const path = formData.get('path');
-    const buckets = formData.get('buckerts') as string;
+    const bucket = formData.get('bucket') as string;
 
     // 중복시 덮어씌움
     const { data, error } = await supabase.storage
-        .from(buckets)
-        .upload(`${path}/${file.name}`, file!, { upsert: true });
+        .from(bucket)
+        .upload(`${path}/picture`, file!, { upsert: true });
 
     if (error) {
         // 실패시 에러
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     } else {
         // 성공시 url얻어와서 res에 뿌려줌
         const { data: url } = supabase.storage
-            .from(buckets)
+            .from(bucket)
             .getPublicUrl(data.path);
 
         return NextResponse.json(url);
