@@ -8,16 +8,16 @@ import axios from 'axios';
 
 interface IProps {
     postData: IPost;
+    commentData: IComment;
 }
 
-export default function PostComment({ postData }: IProps) {
+export default function PostComment({ postData, commentData }: IProps) {
     // 코멘트 데이터 조회하려면 필요한거
     // 각 게시글에 맞는 코멘트를 조회한다.
     // 각 게시글마다 코맨트 조회하려면 post_id
     // post_id
     // comments: []
     const { getComment } = useQueryComment(postData.id);
-    console.log(getComment);
 
     return (
         <>
@@ -28,11 +28,11 @@ export default function PostComment({ postData }: IProps) {
                 {getComment?.map((item) => {
                     return (
                         <>
-                            <div className='flex gap-4'>
+                            <div className='flex gap-4' key={item.id}>
                                 <Avatar src='/broken-image.jpg' />
                                 <div className='flex flex-col'>
                                     <span>
-                                        닉네임 <strong>시간</strong>
+                                        {item.user_id} <strong>시간</strong>
                                     </span>
 
                                     <p>{item.content}</p>

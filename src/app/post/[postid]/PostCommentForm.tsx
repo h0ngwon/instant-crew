@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import { IPost } from '@/hooks/useQueryPost';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import useQueryComment from '@/hooks/useQueryComment';
+import useQueryComment, { IComment } from '@/hooks/useQueryComment';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { supabase } from '@/apis/dbApi';
 
 interface IProps {
     postData: IPost;
@@ -10,8 +13,9 @@ interface IProps {
 interface ICommentFormInput {
     content: string;
 }
+
 export default function PostCommentForm({ postData }: IProps) {
-    const { user_id, id: post_id } = postData;
+    const { id: post_id } = postData;
 
     const { createComment } = useQueryComment(post_id);
 
@@ -20,10 +24,15 @@ export default function PostCommentForm({ postData }: IProps) {
             content: '',
         },
     });
+
     const onSubmit: SubmitHandler<ICommentFormInput> = async (data) => {
+        const userData = await supabase.auth.getSession();
+        const userId = userData.data.session?.user.id;
+        const userName = userData.data.session?.user.app_metadata.name;
         const newComment = {
             ...data,
-            user_id,
+
+            user_id: userId,
             post_id,
         };
         createComment.mutate({ Row: newComment });
