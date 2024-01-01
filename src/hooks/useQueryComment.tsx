@@ -7,11 +7,17 @@ export interface IComment {
     user_id: string;
     post_id: string;
 }
-const useQueryComment = (postid: string) => {
+export interface IUserComment extends IComment {
+    user: {
+        nickname: string;
+        profile_pic: string;
+    };
+}
+const useQueryComment = (postid: string, picture: string) => {
     //1. mutation을 사용한다.
     const queryClient = useQueryClient();
     // 불러올때
-    const { data, error, isLoading } = useQuery<IComment[]>({
+    const { data, error, isLoading } = useQuery<IComment[] | IUserComment[]>({
         queryFn: async () => {
             const response = await axios.get(`/api/post/comment/${postid}`);
             return response.data;

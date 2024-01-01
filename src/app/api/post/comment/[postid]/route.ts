@@ -11,7 +11,7 @@ export const GET = async (
 
     let { data: post, error } = await supabase
         .from('comment')
-        .select('*')
+        .select('*,user(nickname,profile_pic)')
         .eq('post_id', postid);
 
     return NextResponse.json(post);

@@ -15,9 +15,9 @@ interface ICommentFormInput {
 }
 
 export default function PostCommentForm({ postData }: IProps) {
-    const { id: post_id } = postData;
+    const { id: post_id, picture } = postData;
 
-    const { createComment } = useQueryComment(post_id);
+    const { createComment } = useQueryComment(post_id, picture);
 
     const { register, resetField, handleSubmit } = useForm({
         defaultValues: {
