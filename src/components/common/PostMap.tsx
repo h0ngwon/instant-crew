@@ -72,6 +72,16 @@ export default function PostMap({ location }: IProps) {
         geolocation({ setState: setCurrentLocation });
     }
 
+    useEffect(() => {
+        if (location) {
+            const { lat, lng } = JSON.parse(location);
+            setValue('location', {
+                lat,
+                lng,
+            });
+        }
+    }, [setValue, location]);
+
     // 현위치 감지
     useEffect(() => {
         if (location) return;

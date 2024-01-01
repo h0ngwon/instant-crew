@@ -91,7 +91,7 @@ export default function PostTextfields({ data }: IProps) {
             <Controller
                 name='date'
                 control={control}
-                defaultValue={null}
+                defaultValue={dayjs(data?.date)}
                 render={({ field: { onChange, value, ...restField } }) => (
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={['DatePicker']}>
@@ -115,7 +115,7 @@ export default function PostTextfields({ data }: IProps) {
                                         helperText: errorMessage,
                                     },
                                 }}
-                                value={dayjs(data?.date)}
+                                defaultValue={dayjs(data?.date)}
                                 minDate={dayjs()}
                                 className='w-full'
                                 label='일시'

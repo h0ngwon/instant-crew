@@ -19,9 +19,8 @@ export default function PostPage({ params: { postid } }: IPostPage) {
 
     return (
         <section className='bg-white w-full min-h-screen flex flex-col gap-4 p-4 text-black'>
-            {loading ? (
-                <>로딩중</>
-            ) : (
+            {loading && <>로딩중</>}
+            {post && (
                 <>
                     <PostWriter data={{ ...post![0] }} />
                     <PostMap data={{ ...post![0] }} />
