@@ -21,7 +21,7 @@ export default function useQueryPost(postid?: string) {
             );
             return response.data;
         },
-        queryKey: ['post'],
+        queryKey: postid ? ['post', { postid }] : ['post'],
     });
 
     const createPost = useMutation({

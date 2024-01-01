@@ -6,6 +6,25 @@ interface IProps {
     data: IPost;
 }
 
+const categories = [
+    {
+        value: '맛집',
+        label: '😋',
+    },
+    {
+        value: '문화예술',
+        label: '🎭︎',
+    },
+    {
+        value: '스터디',
+        label: '📖',
+    },
+    {
+        value: '운동',
+        label: '👟',
+    },
+];
+
 export default function PostContent({ data }: IProps) {
     const {
         category,
@@ -20,9 +39,17 @@ export default function PostContent({ data }: IProps) {
         address,
     } = data;
 
+    const selectedCategory = categories.find(({ value, label }) => {
+        return value === category;
+    });
+
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardHeader sx={{ px: 1 }} title={title} subheader={address} />
+            <CardHeader
+                sx={{ px: 1 }}
+                title={`${title} ${selectedCategory?.label}`}
+                subheader={address}
+            />
             <CardMedia
                 sx={{ height: 125, objectFit: 'fill' }}
                 component='img'

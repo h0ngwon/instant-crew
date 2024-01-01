@@ -21,10 +21,6 @@ interface IProps {
 }
 
 export default function PostMap({ data }: IProps) {
-    const [loading, error] = useKakaoLoader({
-        appkey: process.env.NEXT_PUBLIC_KAKAO_KEY?.toString() || '',
-    });
-
     const { lat, lng } = JSON.parse(data.location);
     const [userLocation, setUserLocation] = useState<IGeolocation>({
         center: {
