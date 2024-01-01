@@ -1,17 +1,36 @@
 import React from 'react';
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { IPost } from '@/hooks/useQueryPost';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import useQueryComment from '@/hooks/useQuetyComment';
 
 interface IProps {
-    data: IPost;
+    postData: IPost;
 }
-export default function PostCommentForm({ data }: IProps) {
-    const { register, handleSubmit } = useForm();
+interface ICommentFormInput {
+    content: string;
+}
+export default function PostCommentForm({ postData }: IProps) {
+    const { user_id, id: post_id } = postData;
 
+    const { createComment } = useQueryComment();
+
+    const { register, handleSubmit } = useForm({
+        defaultValues: {
+            content: '',
+        },
+    });
+    const onSubmit: SubmitHandler<ICommentFormInput> = async (data) => {
+        const newComment = {
+            ...data,
+            user_id,
+            post_id,
+        };
+        createComment.mutate({ Row: newComment });
+    };
     return (
         <>
-            <form onSubmit={handleSubmit(() => {})}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     inputProps={{ maxLength: 100 }}
                     fullWidth
@@ -22,6 +41,7 @@ export default function PostCommentForm({ data }: IProps) {
                     rows={2}
                     {...register('content', { required: true })}
                 />
+                <Button type='submit'>입력</Button>
             </form>
         </>
     );
