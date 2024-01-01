@@ -15,8 +15,6 @@ interface IProps {
 }
 
 export default function PostMap({ location }: IProps) {
-    console.log(location);
-
     // const current = JSON.parse(location!);
     // 카카오 로더
     const [loading, error] = useKakaoLoader({

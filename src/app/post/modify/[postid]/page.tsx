@@ -29,8 +29,6 @@ interface IPostPage {
 export default function CreatePostPage({ params: { postid } }: IPostPage) {
     const { post, loading, error } = useQueryPost(postid);
 
-    console.log(post);
-
     const methods = useForm<ITextFields>();
 
     const { modifyPost } = useQueryPost();
@@ -104,7 +102,7 @@ export default function CreatePostPage({ params: { postid } }: IPostPage) {
                     className='flex flex-col gap-4 p-4'
                     onSubmit={methods.handleSubmit(submit)}
                 >
-                    {loading && <>로딩중</>}/
+                    {loading && <>로딩중</>}
                     {post && (
                         <>
                             <PostMap location={post[0].location} />

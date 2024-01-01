@@ -37,7 +37,6 @@ export default function PostTextfields({ data }: IProps) {
     // react-hook-form context
     const { register, control } = useFormContext();
 
-    console.log(data);
     // datepicker 에러
     const [error, setError] = React.useState<DateValidationError | null>(null);
     const errorMessage = useMemo(() => {
