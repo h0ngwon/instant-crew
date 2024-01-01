@@ -10,6 +10,7 @@ export interface IPost {
     picture: string;
     title: string;
     user_id: string;
+    address: string;
 }
 export default function useQueryPost(postid?: string) {
     const queryClient = useQueryClient();

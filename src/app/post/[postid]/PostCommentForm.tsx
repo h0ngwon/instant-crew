@@ -11,7 +11,11 @@ export default function PostCommentForm({ data }: IProps) {
 
     return (
         <>
-            <form onSubmit={handleSubmit(() => {})}>
+            <form
+                onSubmit={handleSubmit((data) => {
+                    console.log(data);
+                })}
+            >
                 <TextField
                     inputProps={{ maxLength: 100 }}
                     fullWidth

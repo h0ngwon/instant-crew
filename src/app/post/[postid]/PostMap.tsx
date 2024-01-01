@@ -12,17 +12,20 @@ import {
     MapMarker,
     useKakaoLoader,
 } from 'react-kakao-maps-sdk';
+import { IPost } from '@/hooks/useQueryPost';
+import Image from 'next/image';
+import PostContent from './PostContent';
 
-interface IPostMap {
-    location: string;
+interface IProps {
+    data: IPost;
 }
 
-export default function PostMap({ location }: IPostMap) {
+export default function PostMap({ data }: IProps) {
     const [loading, error] = useKakaoLoader({
         appkey: process.env.NEXT_PUBLIC_KAKAO_KEY?.toString() || '',
     });
 
-    const { lat, lng } = JSON.parse(location);
+    const { lat, lng } = JSON.parse(data.location);
     const [userLocation, setUserLocation] = useState<IGeolocation>({
         center: {
             lat: 0,
@@ -51,9 +54,6 @@ export default function PostMap({ location }: IPostMap) {
 
     return (
         <>
-            <Typography variant='h4' className='font-semibold'>
-                장소
-            </Typography>
             <div className='w-full h-[500px] relative'>
                 <Map
                     // zoomable={false}
@@ -61,11 +61,14 @@ export default function PostMap({ location }: IPostMap) {
                     style={{ width: '100%', height: '100%' }}
                     level={3}
                 >
-                    <MapMarker position={{ lat, lng }}>
-                        <div className='flex justify-center items-center w-[150px] h-[34px]'>
-                            약속장소입니다.
-                        </div>
-                    </MapMarker>
+                    <MapMarker position={{ lat, lng }}></MapMarker>
+                    <CustomOverlayMap
+                        xAnchor={-0.08}
+                        yAnchor={1.14}
+                        position={{ lat, lng }}
+                    >
+                        <PostContent data={data} />
+                    </CustomOverlayMap>
                     <CustomOverlayMap position={userLocation.center}>
                         <div className='label bg-white text-black px-4 shadow-md rounded-md text-xl'>
                             <span className='left'></span>
