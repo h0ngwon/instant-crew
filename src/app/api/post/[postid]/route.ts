@@ -39,3 +39,30 @@ export const DELETE = async (
         return NextResponse.json(data);
     }
 };
+
+export const PUT = async (
+    req: NextRequest,
+    context: { params: { postid: string } },
+) => {
+    const {
+        params: { postid },
+    } = context;
+
+    const { file, ...rest } = await req.json();
+
+    console.log(postid);
+    const { data, error } = await supabase
+        .from('post')
+        .update(rest)
+        .eq('id', postid)
+        .select();
+
+    console.log(data);
+    console.log(error);
+
+    if (error) {
+        return new Response(JSON.stringify({ error }), { status: 400 });
+    } else {
+        return NextResponse.json(data);
+    }
+};
