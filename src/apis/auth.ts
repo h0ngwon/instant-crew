@@ -51,7 +51,6 @@ export const googleSignIn = async () => {
 export const signOut = async () => {
     try {
         await supabase.auth.signOut();
-        localStorage.clear();
     } catch (error) {
         console.log(error);
     }

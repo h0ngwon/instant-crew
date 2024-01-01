@@ -53,8 +53,8 @@ const Header = () => {
                     full_name: '',
                     email: '',
                 });
+                localStorage.clear();
                 console.log(event, session);
-                console.log(userInfo.id);
             }
         });
     }, []);
