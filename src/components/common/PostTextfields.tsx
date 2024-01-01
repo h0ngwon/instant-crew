@@ -115,7 +115,7 @@ export default function PostTextfields({ data }: IProps) {
                                         helperText: errorMessage,
                                     },
                                 }}
-                                value={dayjs(data?.date)}
+                                defaultValue={dayjs(data?.date)}
                                 minDate={dayjs()}
                                 className='w-full'
                                 label='일시'

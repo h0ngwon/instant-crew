@@ -44,7 +44,6 @@ export default function CreatePostPage({ params: { postid } }: IPostPage) {
         const { title, category, date, content, file, location } = data;
         if (!date) console.log('날짜가 없습니다.');
         if (!location) console.log('위치정보가 없습니다.');
-        if (!file) console.log('사진이 없습니다.');
 
         const geocoder = new kakao.maps.services.Geocoder();
         let coord = new kakao.maps.LatLng(location.lat, location.lng);
@@ -67,7 +66,7 @@ export default function CreatePostPage({ params: { postid } }: IPostPage) {
         });
 
         // 사진가져오기
-        const picture = await uploadStorage(file, id);
+        const picture = file ? await uploadStorage(file, id) : post![0].picture;
 
         // 업로드하기
         modifyPost.mutate({
