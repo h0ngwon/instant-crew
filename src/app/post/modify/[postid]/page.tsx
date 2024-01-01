@@ -1,15 +1,18 @@
 'use client';
 import React from 'react';
-import CreatePostTextFields from './CreatePostTextFields';
-import CreatePostMap from './CreatePostMap';
-import ImgPrivew from './ImgPrivew';
-import { useForm, FormProvider } from 'react-hook-form';
-import { Button } from '@mui/material';
-import axios from 'axios';
-import { v4 as uuid } from 'uuid';
+import { FormProvider, useForm } from 'react-hook-form';
 import useQueryPost from '@/hooks/useQueryPost';
 import { useRecoilState } from 'recoil';
+import { v4 as uuid } from 'uuid';
 import { userState } from '@/recoil/authAtom';
+import axios from 'axios';
+import { Button } from '@mui/material';
+
+import PostMap from '@/components/common/PostMap';
+import PostTextfields from '@/components/common/PostTextfields';
+import PostImgPrivew from '@/components/common/PostImgPrivew';
+import { redirect } from 'next/navigation';
+
 export interface ITextFields {
     title: string;
     category: '맛집' | '문화예술' | '스터디' | '운동';
@@ -19,12 +22,17 @@ export interface ITextFields {
     location: { lat: number; lng: number };
 }
 
-export default function CreatePostForm() {
-    const methods = useForm<ITextFields>();
-    const { createPost } = useQueryPost();
-    const [userInfo, setUserInfo] = useRecoilState(userState);
+interface IPostPage {
+    params: { postid: string };
+}
 
-    console.log(userInfo);
+export default function CreatePostPage({ params: { postid } }: IPostPage) {
+    const { post, loading, error } = useQueryPost(postid);
+
+    const methods = useForm<ITextFields>();
+
+    const { modifyPost } = useQueryPost();
+    const [userInfo, setUserInfo] = useRecoilState(userState);
 
     async function submit(data: ITextFields) {
         const id = uuid();
@@ -57,7 +65,8 @@ export default function CreatePostForm() {
         const picture = await uploadStorage(file, id);
 
         // 업로드하기
-        createPost.mutate({
+        modifyPost.mutate({
+            postid,
             Row: {
                 ...data,
                 id,
@@ -87,35 +96,42 @@ export default function CreatePostForm() {
     }
 
     return (
-        <FormProvider {...methods}>
-            <form
-                className='flex flex-col gap-4 p-4'
-                onSubmit={methods.handleSubmit(submit)}
-            >
-                <CreatePostMap />
-                <div className='flex gap-4'>
-                    <ImgPrivew />
-                    <CreatePostTextFields />
-                </div>
-                <div className='flex justify-center gap-8'>
-                    <Button
-                        type='submit'
-                        className='text-white  bg-blue-400'
-                        variant='contained'
-                        color='primary'
-                    >
-                        완료
-                    </Button>
-                    <Button
-                        type='submit'
-                        className='text-white   bg-red-400'
-                        variant='contained'
-                        color='error'
-                    >
-                        취소
-                    </Button>
-                </div>
-            </form>
-        </FormProvider>
+        <section className='bg-white text-black w-full '>
+            <FormProvider {...methods}>
+                <form
+                    className='flex flex-col gap-4 p-4'
+                    onSubmit={methods.handleSubmit(submit)}
+                >
+                    {loading && <>로딩중</>}
+                    {post && (
+                        <>
+                            <PostMap location={post[0].location} />
+                            <div className='flex gap-4'>
+                                <PostImgPrivew currentUrl={post[0].picture} />
+                                <PostTextfields data={post[0]} />
+                            </div>
+                        </>
+                    )}
+                    <div className='flex justify-center gap-8'>
+                        <Button
+                            type='submit'
+                            className='text-white  bg-blue-400'
+                            variant='contained'
+                            color='primary'
+                        >
+                            완료
+                        </Button>
+                        <Button
+                            type='submit'
+                            className='text-white   bg-red-400'
+                            variant='contained'
+                            color='error'
+                        >
+                            취소
+                        </Button>
+                    </div>
+                </form>
+            </FormProvider>
+        </section>
     );
 }
