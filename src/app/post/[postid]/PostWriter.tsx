@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import Link from 'next/link';
 
 interface IProps {
     data: IPost;
@@ -54,12 +55,31 @@ export default function PostWriter({ data }: IProps) {
     return (
         <>
             {userData ? (
-                <div className='flex items-center gap-1'>
-                    <Avatar src={userData.profile_pic} />
-                    <Typography>{userData.nickname}</Typography>
-                    <Typography className='text-xs text-neutral-400'>
-                        {date}
-                    </Typography>
+                <div className='flex justify-between'>
+                    <div className='flex items-center gap-1'>
+                        <Avatar src={userData.profile_pic} />
+                        <Typography>{userData.nickname}</Typography>
+                        <Typography className='text-xs text-neutral-400'>
+                            {date}
+                        </Typography>
+                    </div>
+                    <div>
+                        <Link href={`/post/modify/${id}`}>
+                            <Button
+                                className='text-black hover:bg-transparent rounded-lg'
+                                variant='contained'
+                            >
+                                수정하기(테스트)
+                            </Button>
+                        </Link>
+                        <Button
+                            onClick={onClickDelete}
+                            className='text-black hover:bg-transparent rounded-lg'
+                            variant='contained'
+                        >
+                            삭제하기(테스트)
+                        </Button>
+                    </div>
                 </div>
             ) : (
                 <>로딩중</>
@@ -74,13 +94,6 @@ export default function PostWriter({ data }: IProps) {
                     variant='contained'
                 >
                     참여하기
-                </Button>
-                <Button
-                    onClick={onClickDelete}
-                    className='text-black hover:bg-transparent rounded-lg'
-                    variant='contained'
-                >
-                    삭제하기(테스트)
                 </Button>
             </div>
         </>

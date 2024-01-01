@@ -2,7 +2,6 @@
 import React from 'react';
 import PostMap from './PostMap';
 import useQueryPost from '@/hooks/useQueryPost';
-import PostContent from './PostContent';
 import PostComment from './PostComment';
 import PostCommentForm from './PostCommentForm';
 import { redirect } from 'next/navigation';

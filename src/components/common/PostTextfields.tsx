@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Controller, useFormContext } from 'react-hook-form';
 import { DateValidationError } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import { IPost } from '@/hooks/useQueryPost';
 
 const category = [
     {
@@ -28,10 +29,15 @@ const category = [
     },
 ];
 
-export default function CreatePostTextFields() {
+interface IProps {
+    data?: IPost;
+}
+
+export default function PostTextfields({ data }: IProps) {
     // react-hook-form context
     const { register, control } = useFormContext();
 
+    console.log(data);
     // datepicker 에러
     const [error, setError] = React.useState<DateValidationError | null>(null);
     const errorMessage = useMemo(() => {
@@ -56,7 +62,11 @@ export default function CreatePostTextFields() {
                 id='outlined-basic'
                 label='제목'
                 variant='outlined'
-                {...register('title', { required: true, maxLength: 20 })}
+                {...register('title', {
+                    value: data?.title,
+                    required: true,
+                    maxLength: 20,
+                })}
             />
             <TextField
                 fullWidth
@@ -64,7 +74,10 @@ export default function CreatePostTextFields() {
                 id='standard-basic'
                 label='카테고리'
                 variant='outlined'
-                {...register('category', { required: true })}
+                {...register('category', {
+                    value: data?.category,
+                    required: true,
+                })}
                 SelectProps={{
                     native: true,
                 }}
@@ -103,6 +116,7 @@ export default function CreatePostTextFields() {
                                         helperText: errorMessage,
                                     },
                                 }}
+                                value={dayjs(data?.date)}
                                 minDate={dayjs()}
                                 className='w-full'
                                 label='일시'
@@ -122,7 +136,11 @@ export default function CreatePostTextFields() {
                 label='내용'
                 variant='outlined'
                 rows={4}
-                {...register('content', { required: true, maxLength: 100 })}
+                {...register('content', {
+                    value: data?.content,
+                    required: true,
+                    maxLength: 100,
+                })}
             />
         </div>
     );
