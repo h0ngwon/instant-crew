@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import useQueryPost from '@/hooks/useQueryPost';
 import { useRecoilState } from 'recoil';
@@ -28,14 +28,19 @@ interface IPostPage {
 
 export default function CreatePostPage({ params: { postid } }: IPostPage) {
     const { post, loading, error } = useQueryPost(postid);
-
-    const methods = useForm<ITextFields>();
-
     const { modifyPost } = useQueryPost();
     const [userInfo, setUserInfo] = useRecoilState(userState);
 
+    useEffect(() => {
+        if (modifyPost.isSuccess) {
+            redirect(`/post/${postid}`);
+        }
+    }, [postid, modifyPost.isSuccess]);
+
+    const methods = useForm<ITextFields>();
+
     async function submit(data: ITextFields) {
-        const id = uuid();
+        const id = post![0].id;
         const { title, category, date, content, file, location } = data;
         if (!date) console.log('날짜가 없습니다.');
         if (!location) console.log('위치정보가 없습니다.');

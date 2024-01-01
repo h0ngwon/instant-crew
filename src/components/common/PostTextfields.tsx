@@ -91,7 +91,7 @@ export default function PostTextfields({ data }: IProps) {
             <Controller
                 name='date'
                 control={control}
-                defaultValue={null}
+                defaultValue={dayjs(data?.date)}
                 render={({ field: { onChange, value, ...restField } }) => (
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={['DatePicker']}>

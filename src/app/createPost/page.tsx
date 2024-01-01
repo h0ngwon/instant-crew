@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import useQueryPost from '@/hooks/useQueryPost';
 import { useRecoilState } from 'recoil';
@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import PostMap from '@/components/common/PostMap';
 import PostTextfields from '@/components/common/PostTextfields';
 import PostImgPrivew from '@/components/common/PostImgPrivew';
+import { redirect } from 'next/navigation';
 
 export interface ITextFields {
     title: string;
@@ -26,6 +27,12 @@ export default function CreatePostPage() {
 
     const { createPost } = useQueryPost();
     const [userInfo, setUserInfo] = useRecoilState(userState);
+
+    useEffect(() => {
+        if (createPost.isSuccess) {
+            redirect('../');
+        }
+    }, [createPost.isSuccess]);
 
     async function submit(data: ITextFields) {
         const id = uuid();
