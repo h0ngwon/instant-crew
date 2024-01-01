@@ -19,7 +19,7 @@ export default function PostCommentForm({ postData }: IProps) {
 
     const { createComment } = useQueryComment(post_id);
 
-    const { register, handleSubmit } = useForm({
+    const { register, resetField, handleSubmit } = useForm({
         defaultValues: {
             content: '',
         },
@@ -28,14 +28,13 @@ export default function PostCommentForm({ postData }: IProps) {
     const onSubmit: SubmitHandler<ICommentFormInput> = async (data) => {
         const userData = await supabase.auth.getSession();
         const userId = userData.data.session?.user.id;
-        const userName = userData.data.session?.user.app_metadata.name;
         const newComment = {
             ...data,
-
             user_id: userId,
             post_id,
         };
         createComment.mutate({ Row: newComment });
+        resetField('content');
     };
     return (
         <>

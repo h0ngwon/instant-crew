@@ -30,7 +30,7 @@ const useQueryComment = (postid: string) => {
             return response;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['post'] });
+            queryClient.invalidateQueries({ queryKey: ['comment'] });
             return true;
         },
         onError: (error) => {

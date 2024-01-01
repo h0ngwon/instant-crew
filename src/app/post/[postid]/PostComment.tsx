@@ -5,6 +5,7 @@ import { IPost } from '@/hooks/useQueryPost';
 import useQueryComment, { IComment } from '@/hooks/useQueryComment';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 interface IProps {
     postData: IPost;
@@ -19,6 +20,11 @@ export default function PostComment({ postData, commentData }: IProps) {
     // comments: []
     const { getComment } = useQueryComment(postData.id);
 
+    const postTime = (createat: string) => {
+        const date = dayjs(createat).format('YY.MM.DD HH:mm');
+        return date;
+    };
+
     return (
         <>
             <Typography variant='h4' className='font-semibold'>
@@ -32,9 +38,11 @@ export default function PostComment({ postData, commentData }: IProps) {
                                 <Avatar src='/broken-image.jpg' />
                                 <div className='flex flex-col'>
                                     <span>
-                                        {item.user_id} <strong>시간</strong>
+                                        {item.user_id}{' '}
+                                        <strong className='text-gray-400'>
+                                            {postTime(item.created_at)}
+                                        </strong>
                                     </span>
-
                                     <p>{item.content}</p>
                                 </div>
                             </div>
