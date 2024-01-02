@@ -70,7 +70,8 @@ const ProfileModifyForm = () => {
                 .from('user')
                 .getPublicUrl(`${test?.id}/profile`);
 
-            const profilePicUrl = data?.publicUrl ?? test?.user_metadata.avatar_url;
+            const profilePicUrl =
+                data?.publicUrl ?? test?.user_metadata.avatar_url;
 
             await supabase
                 .from('user')

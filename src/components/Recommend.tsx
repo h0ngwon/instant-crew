@@ -4,8 +4,11 @@ import { Card, CardContent, CardMedia, Box, Button } from '@mui/material';
 import { getRandomData } from '../axios/axiosApi';
 import { Data } from '@/app/api/post/recommend/route';
 import Link from 'next/link';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/recoil/authAtom';
 
 const Recommend = () => {
+    const userInfo = useRecoilValue(userState);
     const [recommendData, setRecommendData] = useState<Data>([]);
 
     const fetchRandomData = async (): Promise<void> => {
@@ -26,7 +29,10 @@ const Recommend = () => {
             <div className='p-[30px] h-[85%]'>
                 <div className='flex justify-between py-[30px]'>
                     <h1 className='text-[30px] font-bold'>
-                        <span className='text-main-color'>user</span>님 추천
+                        <span className='text-main-color'>
+                            {userInfo.full_name || 'user'}
+                        </span>
+                        님 추천
                     </h1>
                     <Button
                         className='text-white  bg-blue-600'
@@ -40,25 +46,27 @@ const Recommend = () => {
                     {recommendData.map((rec) => {
                         return (
                             <Card key={rec.id} className='shadow-main-shadow'>
-                                <Box className='w-full h-[100%] flex items-center'>
-                                    <CardMedia
-                                        className='w-[60%] h-[100%]'
-                                        image={`${rec.picture}`}
-                                    />
-                                    <CardContent className='flex flex-col justify-center items-center w-[40%] truncate'>
-                                        <div className='h-[50%] truncate'>
-                                            <h1 className='text-[36px] font-bold truncate'>
-                                                {rec.title}
-                                            </h1>
-                                        </div>
-                                        <p className='text-[20px] mt-[10px] truncate'>
-                                            {rec.content}
-                                        </p>
-                                        <p className='text-[16px] mt-[10px] truncate'>
-                                            {rec.date}
-                                        </p>
-                                    </CardContent>
-                                </Box>
+                                <Link href={`/post/${rec.id}`}>
+                                    <Box className='w-full h-[100%] flex items-center'>
+                                        <CardMedia
+                                            className='w-[60%] h-[100%]'
+                                            image={`${rec.picture}`}
+                                        />
+                                        <CardContent className='flex flex-col justify-center items-center w-[40%] truncate'>
+                                            <div className='h-[50%] truncate'>
+                                                <h1 className='text-[36px] font-bold truncate'>
+                                                    {rec.title}
+                                                </h1>
+                                            </div>
+                                            <p className='text-[20px] mt-[10px] truncate'>
+                                                {rec.content}
+                                            </p>
+                                            <p className='text-[16px] mt-[10px] truncate'>
+                                                {rec.date}
+                                            </p>
+                                        </CardContent>
+                                    </Box>
+                                </Link>
                             </Card>
                         );
                     })}

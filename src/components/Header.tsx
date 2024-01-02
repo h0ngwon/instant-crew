@@ -48,6 +48,7 @@ const Header = () => {
                 if (error) {
                     console.error('supabase error', error);
                 }
+                console.log(event, session);
             } else if (event === 'SIGNED_OUT') {
                 console.log('나와라');
                 setUserInfo({
