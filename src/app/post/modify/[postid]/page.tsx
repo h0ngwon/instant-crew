@@ -45,7 +45,6 @@ export default function CreatePostPage({ params: { postid } }: IPostPage) {
         const { title, category, date, content, file, location } = data;
         if (!userInfo.id) return toast.error('로그인 후 시도해주세요');
         if (!location) return toast.error('위치정보를 등록해주세요');
-        if (!file) return toast.error('사진을 등록해주세요');
 
         const geocoder = new kakao.maps.services.Geocoder();
         let coord = new kakao.maps.LatLng(location.lat, location.lng);
