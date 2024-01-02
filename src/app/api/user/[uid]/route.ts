@@ -50,6 +50,8 @@ export async function PUT(
     const { join_posts_id } = body;
     const currentJoinPostsId = data.join_posts_id || [];
 
+    console.log(currentJoinPostsId);
+
     const updatedJoinPostsId = currentJoinPostsId.includes(join_posts_id)
         ? currentJoinPostsId.filter((id) => id !== join_posts_id)
         : [...currentJoinPostsId, join_posts_id];
