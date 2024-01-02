@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { redirect } from 'next/navigation';
 export interface IPost {
     category: string;
     content: string;
@@ -36,7 +37,6 @@ export default function useQueryPost(postid?: string) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['post'] });
-            return true;
         },
         onError: (error) => {
             console.log(error);
