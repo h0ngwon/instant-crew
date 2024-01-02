@@ -20,13 +20,11 @@ const Header = () => {
 
     const logout = async () => {
         try {
-            console.log('111');
             // await signOut();
             const { error } = await supabase.auth.signOut();
-            console.log('333');
+
             toast.success('로그아웃되었습니다');
         } catch (error) {
-            console.log('222');
             toast.error('다시 한 번 시도해주세요');
         }
     };

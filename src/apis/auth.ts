@@ -48,10 +48,11 @@ export const googleSignIn = async () => {
 
 // 로그아웃
 export const signOut = async () => {
-    console.log('hi');
-    console.log(supabase);
-    const { error } = await supabase.auth.signOut();
-    console.log('bye');
+    try {
+        await supabase.auth.signOut();
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 // 유저정보
