@@ -6,9 +6,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './globals.css';
 import './reset.css';
 import Script from 'next/script';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
-
 // export const metadata: Metadata = {
 //     title: 'Instant crew',
 //     description: '모임을 통해 새로운 친구를 만나보세요!',
@@ -32,6 +33,7 @@ export default function RootLayout({
                     </head>
                     <body>
                         <section>
+                            <ToastContainer />
                             <Header />
                             {children}
                         </section>

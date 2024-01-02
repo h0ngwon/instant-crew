@@ -12,7 +12,7 @@ export const GET = async (
 
     let { data: post, error } = await supabase
         .from('post')
-        .select('*')
+        .select('*,user(nickname,profile_pic)')
         .eq('id', postid);
 
     return NextResponse.json(post);
@@ -50,6 +50,7 @@ export const PUT = async (
 
     const { file, ...rest } = await req.json();
 
+    console.log(rest);
     console.log(postid);
     const { data, error } = await supabase
         .from('post')
