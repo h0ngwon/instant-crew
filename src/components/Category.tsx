@@ -14,7 +14,7 @@ const Category = () => {
     }[] = staticData.banner;
 
     return (
-        <section id='category' className='mt-[50px] h-[30vh]'>
+        <section id='category' className='mt-[50px] h-[25vh]'>
             <div className='w-full flex justify-around items-center'>
                 {banner.map((item) => {
                     return (

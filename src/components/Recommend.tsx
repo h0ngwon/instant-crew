@@ -1,8 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardMedia, Box } from '@mui/material';
+import { Card, CardContent, CardMedia, Box, Button } from '@mui/material';
 import { getRandomData } from '../axios/axiosApi';
 import { Data } from '@/app/api/post/recommend/route';
+import Link from 'next/link';
 
 const Recommend = () => {
     const [recommendData, setRecommendData] = useState<Data>([]);
@@ -23,9 +24,18 @@ const Recommend = () => {
     return (
         <section id='recommend' className='h-[50vh]'>
             <div className='p-[30px] h-[85%]'>
-                <h1 className='text-[30px] font-bold'>
-                    <span className='text-main-color'>user</span>님 추천
-                </h1>
+                <div className='flex justify-between py-[30px]'>
+                    <h1 className='text-[30px] font-bold'>
+                        <span className='text-main-color'>user</span>님 추천
+                    </h1>
+                    <Button
+                        className='text-white  bg-blue-600'
+                        variant='contained'
+                        color='primary'
+                    >
+                        <Link href='/createPost'>글쓰기</Link>
+                    </Button>
+                </div>
                 <div className='w-full h-[100%] grid grid-cols-2 gap-[20px] mt-[20px]'>
                     {recommendData.map((rec) => {
                         return (

@@ -50,6 +50,7 @@ export default function BasicModal({ title, buttonName, children }: Props) {
                     </Typography>
                     <Typography id='modal-modal-description' sx={{ mt: 2 }} />
                     {children}
+
                     <Button
                         onClick={handleClose}
                         className='absolute top-2 right-2'
