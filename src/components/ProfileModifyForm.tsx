@@ -1,28 +1,28 @@
 'use client';
-
 import { supabase } from '@/app/api/dbApi';
 import { AuthType, userState } from '@/recoil/authAtom';
 import { Button, TextField } from '@mui/material';
+import { DebouncedFunc, debounce } from 'lodash';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { DebouncedFunc, debounce } from 'lodash';
 
 const ProfileModifyForm = () => {
     const [userInfo, setUserInfo] = useRecoilState<AuthType>(userState);
-    const [file, setFile] = useState<string | null>();
+    const [file, setFile] = useState<File | undefined>();
+    const [prevImage, setPrevImage] = useState<string | undefined>();
     const [userNickname, setUserNickname] = useState<string>(
         userInfo.full_name,
     );
 
     const prevImg = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const fileInput = event.target;
-        if (fileInput.files) {
+        if (fileInput.files && fileInput.files[0]) {
             const imgFile: File | null = fileInput.files[0];
-
+            setFile(imgFile);
             // make preview url
-            const imageurl: string = URL.createObjectURL(imgFile);
-            setFile(imageurl);
+            const imageUrl: string = URL.createObjectURL(imgFile);
+            setPrevImage(imageUrl);
         }
     };
 
@@ -37,19 +37,42 @@ const ProfileModifyForm = () => {
     ): Promise<void> => {
         e.preventDefault();
         //TODO storage upload -> databae update -> recoil mutate
+
+        //storage upload
         try {
-            const { data, error } = await supabase
+            if (file) {
+                await supabase.storage
+                    .from('user')
+                    .update(`${userInfo.id}/profile`, file, {
+                        cacheControl: '300',
+                        upsert: true,
+                    });
+            }
+        } catch (error) {
+            throw new Error();
+        }
+
+        //database update
+        try {
+            const { data } = await supabase.storage
+                .from('user')
+                .getPublicUrl(`${userInfo.id}/profile`);
+
+            const profilePicUrl = data?.publicUrl ?? userInfo.avatar_url;
+
+            await supabase
                 .from('user')
                 .update({
                     nickname: userNickname ?? userInfo.full_name,
-                    profile_pic: file ?? userInfo.avatar_url,
+                    profile_pic: profilePicUrl,
                 })
                 .eq('email', userInfo.email);
-            console.log(userInfo.full_name, userInfo.avatar_url);
-            console.log(data, error);
         } catch (error) {
-            console.log(error);
+            throw new Error();
         }
+
+        //recoil update
+        
     };
     return (
         <form
@@ -60,7 +83,11 @@ const ProfileModifyForm = () => {
                 <div>
                     <Image
                         className='cursor-pointer'
-                        src={file ?? userInfo.avatar_url ?? '/img/avatar.png'}
+                        src={
+                            prevImage ??
+                            userInfo.avatar_url ??
+                            '/img/avatar.png'
+                        }
                         alt='avatar'
                         width={200}
                         height={200}
