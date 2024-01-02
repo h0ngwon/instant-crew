@@ -50,6 +50,7 @@ export const PUT = async (
 
     const { file, ...rest } = await req.json();
 
+    console.log(rest);
     console.log(postid);
     const { data, error } = await supabase
         .from('post')

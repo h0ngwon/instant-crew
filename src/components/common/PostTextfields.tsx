@@ -55,11 +55,12 @@ export default function PostTextfields({ data }: IProps) {
     }, [error]);
 
     return (
-        <div className='flex flex-col w-full gap-3'>
+        <div className='flex  flex-col w-full gap-3'>
             <TextField
                 fullWidth
                 id='outlined-basic'
                 label='제목'
+                inputProps={{ maxLength: 20 }}
                 variant='outlined'
                 {...register('title', {
                     value: data?.title,
@@ -74,7 +75,7 @@ export default function PostTextfields({ data }: IProps) {
                 label='카테고리'
                 variant='outlined'
                 {...register('category', {
-                    value: data?.category,
+                    value: data?.category ? data?.category : '맛집',
                     required: true,
                 })}
                 SelectProps={{
@@ -84,6 +85,26 @@ export default function PostTextfields({ data }: IProps) {
                 {category.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label.concat(' ', option.value)}
+                    </option>
+                ))}
+            </TextField>
+            <TextField
+                fullWidth
+                select
+                id='standard-basic'
+                label='인원수'
+                variant='outlined'
+                {...register('max_join', {
+                    // value: data?.category ? data?.category : '맛집',
+                    required: true,
+                })}
+                SelectProps={{
+                    native: true,
+                }}
+            >
+                {new Array(10).fill(null).map((value, index) => (
+                    <option key={index} value={index + 1}>
+                        {index + 1}명
                     </option>
                 ))}
             </TextField>
@@ -134,7 +155,8 @@ export default function PostTextfields({ data }: IProps) {
                 id='standard-basic'
                 label='내용'
                 variant='outlined'
-                rows={4}
+                inputProps={{ maxLength: 100 }}
+                minRows={4}
                 {...register('content', {
                     value: data?.content,
                     required: true,
