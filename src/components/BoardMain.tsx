@@ -62,7 +62,7 @@ export default function BoardMain({ category }: { category?: string }) {
     }, []);
 
     const postTime = (createat: string) => {
-        const date = dayjs(createat).format('YY.MMDD HH:mm');
+        const date = dayjs(createat).format('YY.MM.DD HH:mm');
         return date;
     };
 
