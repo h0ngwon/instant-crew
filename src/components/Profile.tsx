@@ -12,14 +12,14 @@ const Profile = () => {
 
     return (
         <div className='flex flex-col justify-center items-center'>
-            <Image
-                priority={true}
-                src={`${userInfo.avatar_url}`}
-                width={150}
-                height={150}
-                alt='avatar'
-                
-            />
+            {userInfo.avatar_url && (
+                <Image
+                    src={`${userInfo.avatar_url}`}
+                    width={150}
+                    height={150}
+                    alt='avatar'
+                />
+            )}
             <h1 className='m-8 font-bold text-[48px]'>{userInfo.full_name}</h1>
         </div>
     );

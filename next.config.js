@@ -20,7 +20,6 @@ const nextConfig = {
                 hostname: 'lh3.googleusercontent.com',
             }
         ],
-        domains: ['rummvqozlgllyttgdnqh.supabase.co', 'localhost', 'lh3.googleusercontent.com'],
     },
 };
 
