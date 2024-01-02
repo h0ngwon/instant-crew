@@ -70,11 +70,8 @@ export default function BoardMain({ category }: { category?: string }) {
     return (
         <main className='max-w-[1200px] m-auto grid grid-cols-2 gap-[50px] p-10 h-max'>
             {posts.map((item, index) => (
-                <Link href={`/post/${item.id}`}>
-                    <div
-                        key={index}
-                        className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden'
-                    >
+                <Link href={`/post/${item.id}`} key={index}>
+                    <div className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden'>
                         <div className='float-left w-[180px] mr-[20px]'>
                             <Image
                                 src={item.picture as string}
