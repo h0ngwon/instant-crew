@@ -59,12 +59,12 @@ export default function PostImgPrivew({ currentUrl }: IProps) {
                 onChange={onChangeFile}
             />
             <Card
-                className='w-full h-[359px]  flex items-center justify-center shadow-lg bg-neutral-100 rounded-md'
+                className='w-full flex items-center justify-center shadow-lg bg-neutral-100 rounded-md'
                 onClick={() => fileRef.current?.click()}
             >
                 {url && (
                     <Image
-                        className='w-full h-full'
+                        className='w-full max-h-[405px]'
                         src={url}
                         alt='테스트'
                         width={300}

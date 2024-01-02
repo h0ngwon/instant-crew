@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { redirect } from 'next/navigation';
 export interface IPost {
     category: string;
     content: string;
@@ -11,9 +12,17 @@ export interface IPost {
     title: string;
     user_id: string;
     address: string;
+    max_join: number;
+    join_user_id: string[];
+    user: {
+        nickname: string;
+        profile_pic: string;
+    };
 }
+
 export default function useQueryPost(postid?: string) {
     const queryClient = useQueryClient();
+
     const { data, error, isLoading } = useQuery<IPost[]>({
         queryFn: async () => {
             const response = await axios.get(
@@ -35,7 +44,6 @@ export default function useQueryPost(postid?: string) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['post'] });
-            return true;
         },
         onError: (error) => {
             console.log(error);
@@ -56,6 +64,7 @@ export default function useQueryPost(postid?: string) {
 
     const modifyPost = useMutation({
         mutationFn: async ({ postid, Row }: any) => {
+            console.log(postid);
             const response = await axios.put(`/api/post/${postid}`, Row, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +73,7 @@ export default function useQueryPost(postid?: string) {
             return response;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['post', postid] });
+            queryClient.invalidateQueries({ queryKey: ['post'] });
         },
         onError: (error) => {
             console.log(error);

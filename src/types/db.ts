@@ -98,21 +98,21 @@ export interface Database {
                     email: string;
                     id: string;
                     nickname: string;
-
+                    join_posts_id: string[];
                     profile_pic: string | null;
                 };
                 Insert: {
                     email: string;
                     id?: string;
                     nickname: string;
-
+                    join_posts_id?: string[];
                     profile_pic?: string | null;
                 };
                 Update: {
                     email?: string;
                     id?: string;
                     nickname?: string;
-
+                    join_posts_id?: string[];
                     profile_pic?: string | null;
                 };
                 Relationships: [];

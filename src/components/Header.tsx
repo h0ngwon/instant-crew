@@ -21,8 +21,7 @@ const Header = () => {
     const logout = async () => {
         try {
             // await signOut();
-            const { error } = await supabase.auth.signOut();
-
+            await supabase.auth.signOut();
             toast.success('로그아웃되었습니다');
         } catch (error) {
             toast.error('다시 한 번 시도해주세요');
@@ -112,7 +111,7 @@ const Header = () => {
                             <>
                                 <li>
                                     <Button>
-                                        <Link href={userInfo.id}>
+                                        <Link href={`/${userInfo.id}`}>
                                             마이페이지
                                         </Link>
                                     </Button>

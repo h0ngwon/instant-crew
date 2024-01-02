@@ -52,7 +52,7 @@ export default function PostMap({ data }: IProps) {
         <>
             <div className='w-full h-[500px] relative'>
                 <Map
-                    // zoomable={false}
+                    zoomable={false}
                     center={center}
                     style={{ width: '100%', height: '100%' }}
                     level={3}
