@@ -17,7 +17,7 @@ const useQueryComment = (postid: string, picture: string) => {
     //1. mutation을 사용한다.
     const queryClient = useQueryClient();
     // 불러올때
-    const { data, error, isLoading } = useQuery<IComment[] | IUserComment[]>({
+    const { data, error, isLoading } = useQuery<IUserComment[]>({
         queryFn: async () => {
             const response = await axios.get(`/api/post/comment/${postid}`);
             return response.data;
