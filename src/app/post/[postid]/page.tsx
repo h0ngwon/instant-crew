@@ -24,8 +24,8 @@ export default function PostPage({ params: { postid } }: IPostPage) {
                 <>
                     <PostWriter data={{ ...post![0] }} />
                     <PostMap data={{ ...post![0] }} />
-                    <PostComment data={post![0]} />
-                    <PostCommentForm data={{ ...post![0] }} />
+                    <PostComment postData={post![0]} />
+                    <PostCommentForm postData={{ ...post![0] }} />
                 </>
             )}
         </section>
