@@ -4,7 +4,7 @@ import { AuthType, userState } from '@/recoil/authAtom';
 import { Button, TextField } from '@mui/material';
 import { DebouncedFunc, debounce } from 'lodash';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 const ProfileModifyForm = () => {
@@ -58,7 +58,7 @@ const ProfileModifyForm = () => {
                 .from('user')
                 .getPublicUrl(`${userInfo.id}/profile`);
 
-            const profilePicUrl = data?.publicUrl ?? userInfo.avatar_url;
+            const profilePicUrl = data?.publicUrl ?? userInfo.profile_pic;
 
             await supabase
                 .from('user')
@@ -80,18 +80,30 @@ const ProfileModifyForm = () => {
             console.log(data);
             if (data) {
                 setUserInfo({
-                    id: data[0].id,
-                    avatar_url: data[0].profile_pic ?? '',
+                    ...userInfo,
+                    profile_pic: data[0].profile_pic ?? '',
                     full_name: data[0].nickname,
-                    email: data[0].email,
                 });
             }
-
-            console.log(userInfo);
+            await supabase.auth.updateUser({
+                data: {
+                    profile_pic: userInfo.profile_pic ?? '',
+                    full_name: userInfo.full_name,
+                },
+            });
         } catch (error) {
             throw new Error();
         }
+        console.log(userInfo);
+
+        await supabase.auth.updateUser({
+            data: {
+                profile_pic: userInfo.profile_pic ?? '',
+                full_name: userInfo.full_name,
+            },
+        });
     };
+
     return (
         <form
             className='flex flex-col justify-center items-center gap-[10px]'
@@ -103,7 +115,7 @@ const ProfileModifyForm = () => {
                         className='cursor-pointer'
                         src={
                             prevImage ??
-                            userInfo.avatar_url ??
+                            userInfo.profile_pic ??
                             '/img/avatar.png'
                         }
                         alt='avatar'

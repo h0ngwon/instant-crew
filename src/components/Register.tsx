@@ -32,6 +32,7 @@ const Register = () => {
         }
 
         const { data: signUpInfo, error } = await signUp(data);
+        console.log(signUpInfo);
         if (error) {
             toast.error('이미 존재하는 이메일입니다');
             return;

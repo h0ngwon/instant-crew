@@ -1,5 +1,3 @@
-import React from 'react';
-
 const MyPost = () => {
     return (
         <div className='w-[50%] h-[70px] bg-main-background flex items-center'>

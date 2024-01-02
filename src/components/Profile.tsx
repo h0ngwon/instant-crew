@@ -11,9 +11,9 @@ const Profile = () => {
 
     return (
         <div className='flex flex-col justify-center items-center'>
-            {userInfo.avatar_url && (
+            {userInfo.profile_pic && (
                 <Image
-                    src={`${userInfo.avatar_url}`}
+                    src={`${userInfo.profile_pic}`}
                     width={150}
                     height={150}
                     alt='avatar'
