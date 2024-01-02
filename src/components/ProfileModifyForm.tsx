@@ -1,10 +1,12 @@
 'use client';
+import { getUser } from '@/apis/auth';
 import { supabase } from '@/app/api/dbApi';
 import { AuthType, userState } from '@/recoil/authAtom';
 import { Button, TextField } from '@mui/material';
+import { User } from '@supabase/supabase-js';
 import { DebouncedFunc, debounce } from 'lodash';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 const ProfileModifyForm = () => {
@@ -14,6 +16,19 @@ const ProfileModifyForm = () => {
     const [userNickname, setUserNickname] = useState<string>(
         userInfo.full_name,
     );
+
+    const [test, setTest] = useState<User | null>();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getUser();
+            console.log(data);
+            if (data) {
+                setTest(data.user);
+            }
+        };
+        fetchData();
+    }, []);
 
     const prevImg = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const fileInput = event.target;
@@ -43,10 +58,7 @@ const ProfileModifyForm = () => {
             if (file) {
                 await supabase.storage
                     .from('user')
-                    .update(`${userInfo.id}/profile`, file, {
-                        cacheControl: '300',
-                        upsert: true,
-                    });
+                    .update(`${test?.id}\profile`, file);
             }
         } catch (error) {
             throw new Error();
@@ -56,42 +68,41 @@ const ProfileModifyForm = () => {
         try {
             const { data } = await supabase.storage
                 .from('user')
-                .getPublicUrl(`${userInfo.id}/profile`);
+                .getPublicUrl(`${test?.id}/profile`);
 
-            const profilePicUrl = data?.publicUrl ?? userInfo.avatar_url;
+            const profilePicUrl = data?.publicUrl ?? test?.user_metadata.avatar_url;
 
             await supabase
                 .from('user')
                 .update({
-                    nickname: userNickname ?? userInfo.full_name,
+                    nickname: userNickname ?? test?.user_metadata.full_name,
                     profile_pic: profilePicUrl,
                 })
-                .eq('email', userInfo.email);
+                .eq('email', test?.user_metadata.email);
         } catch (error) {
             throw new Error();
         }
 
-        //recoil update
         try {
             const { data } = await supabase
                 .from('user')
                 .select()
-                .eq('email', userInfo.email);
+                .eq('email', test?.user_metadata.email);
             console.log(data);
+
             if (data) {
-                setUserInfo({
-                    id: data[0].id,
-                    avatar_url: data[0].profile_pic ?? '',
-                    full_name: data[0].nickname,
-                    email: data[0].email,
+                await supabase.auth.updateUser({
+                    data: {
+                        full_name: data[0].nickname,
+                        avatar_url: data[0].profile_pic,
+                    },
                 });
             }
-
-            console.log(userInfo);
         } catch (error) {
             throw new Error();
         }
     };
+
     return (
         <form
             className='flex flex-col justify-center items-center gap-[10px]'
@@ -103,7 +114,7 @@ const ProfileModifyForm = () => {
                         className='cursor-pointer'
                         src={
                             prevImage ??
-                            userInfo.avatar_url ??
+                            test?.user_metadata.avatar_url ??
                             '/img/avatar.png'
                         }
                         alt='avatar'
@@ -123,7 +134,7 @@ const ProfileModifyForm = () => {
                 label='닉네임'
                 color='warning'
                 required
-                defaultValue={userInfo.full_name}
+                defaultValue={test?.user_metadata.full_name}
                 onChange={nicknameHandler}
             ></TextField>
             <Button
