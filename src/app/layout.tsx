@@ -27,9 +27,7 @@ export default function RootLayout({
             <RecoilRoot>
                 <html lang='kr'>
                     <head>
-                        <head>
-                            <Script src={KAKAO_SDK_URL} />
-                        </head>
+                        <Script src={KAKAO_SDK_URL} />
                     </head>
                     <body>
                         <section>
