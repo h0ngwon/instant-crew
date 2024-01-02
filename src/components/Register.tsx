@@ -6,7 +6,6 @@ import { authInput, signUp } from '@/apis/auth';
 import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import { modalState } from '@/recoil/modalAtom';
-import axios from 'axios';
 
 const Register = () => {
     const setShowModal = useSetRecoilState(modalState);
@@ -32,24 +31,24 @@ const Register = () => {
             return;
         }
 
-        // const { data: signUpInfo, error } = await signUp(data);
-        // if (error) {
-        //     toast.error('이미 존재하는 이메일입니다');
-        //     return;
-        // }
-
-        // toast.success('회원가입 성공!');
-        // setShowModal({ show: false });
-        try {
-            const res = await axios.post('/api/signup', data);
-            console.log(res);
-            toast.success('회원가입 성공!');
-            setShowModal({ show: false });
-        } catch (error) {
-            console.log(error);
-            toast.error('회원가입 정보를 확인해주세요');
+        const { data: signUpInfo, error } = await signUp(data);
+        if (error) {
+            toast.error('이미 존재하는 이메일입니다');
             return;
         }
+        toast.success('회원가입 성공!');
+        setShowModal({ show: false });
+
+        // try {
+        //     const res = await axios.post('/api/signup', data);
+        //     console.log(res);
+        //     toast.success('회원가입 성공!');
+        //     setShowModal({ show: false });
+        // } catch (error) {
+        //     console.log(error);
+        //     toast.error('회원가입 정보를 확인해주세요');
+        //     return;
+        // }
     };
 
     return (

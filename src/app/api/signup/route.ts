@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '../dbApi';
-import { NextApiRequest, NextApiResponse } from 'next';
 
 interface authInput {
     email: string;
@@ -10,7 +9,6 @@ interface authInput {
 }
 
 const signUp = async ({ email, password, nickname }: authInput) => {
-    console.log(1);
     const defaultImg =
         'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26470D3654FC08C40C';
 
@@ -29,10 +27,8 @@ const signUp = async ({ email, password, nickname }: authInput) => {
 };
 
 export async function POST(req: NextRequest) {
-    const { data, error } = await req.json();
+    const data = await req.json();
+    const signup = await signUp(data);
 
-    const test = await signUp(data);
-    console.log(test);
-
-    return NextResponse.json(test);
+    return NextResponse.json(signup);
 }

@@ -18,17 +18,22 @@ const Header = () => {
     const handleOpen = (title: string) =>
         setShowModal({ show: true, key: title });
 
-    const logout = () => {
+    const logout = async () => {
         try {
-            signOut();
+            console.log('111');
+            // await signOut();
+            const { error } = await supabase.auth.signOut();
+            console.log('333');
             toast.success('로그아웃되었습니다');
         } catch (error) {
+            console.log('222');
             toast.error('다시 한 번 시도해주세요');
         }
     };
 
     useEffect(() => {
         supabase.auth.onAuthStateChange(async (event, session) => {
+            console.log(event);
             if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
                 setUserInfo({
                     id: session?.user.id!,
@@ -36,7 +41,6 @@ const Header = () => {
                     full_name: session?.user.user_metadata.full_name,
                     email: session?.user.email!,
                 });
-
                 // user table에서 요구하는 스키마랑 들어가는 데이터랑 타입이 일치하지 않아서 생긴 에러
                 const { error } = await supabase.from('user').insert({
                     id: session?.user.id,
@@ -48,6 +52,7 @@ const Header = () => {
                     console.error('supabase error', error);
                 }
             } else if (event === 'SIGNED_OUT') {
+                console.log('나와라');
                 setUserInfo({
                     id: '',
                     profile_pic: '',

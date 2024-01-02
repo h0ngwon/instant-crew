@@ -35,7 +35,6 @@ export const signIn = async ({
         email,
         password,
     });
-    // console.log(data, error);
     return { data, error };
 };
 
@@ -49,11 +48,10 @@ export const googleSignIn = async () => {
 
 // 로그아웃
 export const signOut = async () => {
-    try {
-        await supabase.auth.signOut();
-    } catch (error) {
-        console.log(error);
-    }
+    console.log('hi');
+    console.log(supabase);
+    const { error } = await supabase.auth.signOut();
+    console.log('bye');
 };
 
 // 유저정보

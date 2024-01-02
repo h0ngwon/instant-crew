@@ -6,7 +6,6 @@ import { authInput, googleSignIn, signIn } from '@/apis/auth';
 import { useSetRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
 import { modalState } from '@/recoil/modalAtom';
-import axios from 'axios';
 
 const Login = () => {
     const setShowModal = useSetRecoilState(modalState);
@@ -17,6 +16,16 @@ const Login = () => {
     } = useForm<Pick<authInput, 'email' | 'password'>>({ mode: 'onBlur' });
 
     const onValid = async (data: Pick<authInput, 'email' | 'password'>) => {
+        // try {
+        //     const res = await axios.post('/api/signin', data);
+        //     console.log(res);
+        //     toast.success('로그인 성공!');
+        //     setShowModal({ show: false });
+        // } catch (error) {
+        //     toast.error('로그인 정보를 확인해주세요');
+        //     return;
+        // }
+
         const { error, data: response } = await signIn(data);
         if (error) {
             toast.error('로그인 정보를 확인해주세요');
