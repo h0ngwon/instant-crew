@@ -19,7 +19,6 @@ export default function PostComment({ postData }: IProps) {
     // post_id
     // comments: []
     const { getComment } = useQueryComment(postData.id, postData.picture);
-    console.log(getComment);
 
     const postTime = (createat: string) => {
         const date = dayjs(createat).format('YY.MM.DD HH:mm');
@@ -34,20 +33,18 @@ export default function PostComment({ postData }: IProps) {
             <div className='flex gap-4 flex-col '>
                 {getComment?.map((item) => {
                     return (
-                        <>
-                            <div className='flex gap-4' key={item.id}>
-                                <Avatar src={item.user.profile_pic} />
-                                <div className='flex flex-col'>
-                                    <span>
-                                        {item.user.nickname}{' '}
-                                        <strong className='text-gray-400'>
-                                            {postTime(item.created_at)}
-                                        </strong>
-                                    </span>
-                                    <p>{item.content}</p>
-                                </div>
+                        <div className='flex gap-4' key={item.id}>
+                            <Avatar src={item.user.profile_pic} />
+                            <div className='flex flex-col'>
+                                <span>
+                                    {item.user.nickname}{' '}
+                                    <strong className='text-gray-400'>
+                                        {postTime(item.created_at)}
+                                    </strong>
+                                </span>
+                                <p>{item.content}</p>
                             </div>
-                        </>
+                        </div>
                     );
                 })}
             </div>
