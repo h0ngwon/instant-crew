@@ -72,7 +72,25 @@ const ProfileModifyForm = () => {
         }
 
         //recoil update
-        
+        try {
+            const { data } = await supabase
+                .from('user')
+                .select()
+                .eq('email', userInfo.email);
+            console.log(data);
+            if (data) {
+                setUserInfo({
+                    id: data[0].id,
+                    avatar_url: data[0].profile_pic ?? '',
+                    full_name: data[0].nickname,
+                    email: data[0].email,
+                });
+            }
+
+            console.log(userInfo);
+        } catch (error) {
+            throw new Error();
+        }
     };
     return (
         <form

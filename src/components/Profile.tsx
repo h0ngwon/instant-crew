@@ -5,7 +5,6 @@ import { useRecoilState } from 'recoil';
 
 const Profile = () => {
     const [userInfo, setUserInfo] = useRecoilState<AuthType>(userState);
-
     if (!userInfo === undefined) {
         return null;
     }
