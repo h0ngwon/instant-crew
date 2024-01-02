@@ -12,7 +12,12 @@ export interface IPost {
     title: string;
     user_id: string;
     address: string;
+    user: {
+        nickname: string;
+        profile_pic: string;
+    };
 }
+
 export default function useQueryPost(postid?: string) {
     const queryClient = useQueryClient();
 

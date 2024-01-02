@@ -25,19 +25,21 @@ export default function PostWriter({ data }: IProps) {
         picture,
         title,
         user_id,
+        user,
     } = data;
 
-    const {
-        data: userData,
-        isError,
-        isLoading,
-    } = useQuery({
-        queryFn: async () => {
-            const response = await axios.get(`/api/user/${user_id}`);
-            return response.data[0];
-        },
-        queryKey: ['user', user_id],
-    });
+    // const {
+    //     data: userData,
+    //     isError,
+    //     isLoading,
+
+    // } = useQuery({
+    //     queryFn: async () => {
+    //         const response = await axios.get(`/api/user/${user_id}`);
+    //         return response.data[0];
+    //     },
+    //     queryKey: ['user', user_id],
+    // });
 
     const { deletePost } = useQueryPost();
 
@@ -54,36 +56,32 @@ export default function PostWriter({ data }: IProps) {
 
     return (
         <>
-            {userData ? (
-                <div className='flex justify-between'>
-                    <div className='flex items-center gap-1'>
-                        <Avatar src={userData.profile_pic} />
-                        <Typography>{userData.nickname}</Typography>
-                        <Typography className='text-xs text-neutral-400'>
-                            {date}
-                        </Typography>
-                    </div>
-                    <div>
-                        <Link href={`/post/modify/${id}`}>
-                            <Button
-                                className='text-black hover:bg-transparent rounded-lg'
-                                variant='contained'
-                            >
-                                수정하기(테스트)
-                            </Button>
-                        </Link>
+            <div className='flex justify-between'>
+                <div className='flex items-center gap-1'>
+                    <Avatar src={user.profile_pic} />
+                    <Typography>{user.nickname}</Typography>
+                    <Typography className='text-xs text-neutral-400'>
+                        {date}
+                    </Typography>
+                </div>
+                <div>
+                    <Link href={`/post/modify/${id}`}>
                         <Button
-                            onClick={onClickDelete}
                             className='text-black hover:bg-transparent rounded-lg'
                             variant='contained'
                         >
-                            삭제하기(테스트)
+                            수정하기(테스트)
                         </Button>
-                    </div>
+                    </Link>
+                    <Button
+                        onClick={onClickDelete}
+                        className='text-black hover:bg-transparent rounded-lg'
+                        variant='contained'
+                    >
+                        삭제하기(테스트)
+                    </Button>
                 </div>
-            ) : (
-                <>로딩중</>
-            )}
+            </div>
 
             <div className='flex justify-between'>
                 <Typography variant='h4' className='font-semibold'>
