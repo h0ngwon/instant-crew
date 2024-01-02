@@ -6,6 +6,7 @@ import PostComment from './PostComment';
 import PostCommentForm from './PostCommentForm';
 import { redirect } from 'next/navigation';
 import PostHeader from './PostHeader';
+
 interface IPostPage {
     params: { postid: string };
 }
