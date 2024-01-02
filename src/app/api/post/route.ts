@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
         .insert([
             {
                 ...rest,
+                join_user_id: [],
             },
         ])
         .select();
