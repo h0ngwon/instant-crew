@@ -11,8 +11,15 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'rummvqozlgllyttgdnqh.supabase.co',
             },
+            {
+                protocol: 'https',
+                hostname: '**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com',
+            }
         ],
-        domains: ['rummvqozlgllyttgdnqh.supabase.co'],
     },
 };
 

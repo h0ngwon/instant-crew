@@ -15,7 +15,7 @@ export type Data = {
 
 export type RecommendData = NextResponse<Data[]>;
 
-export const getRecommendData = async (): Promise<NextResponse<Data[]>> => {
+export const getRecommendData = async (): Promise<RecommendData> => {
     try {
         const { data, error } = await supabase
             .from('random_post')
