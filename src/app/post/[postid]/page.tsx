@@ -17,8 +17,6 @@ export default function PostPage({ params: { postid } }: IPostPage) {
         return redirect('../');
     }
 
-    console.log(post);
-
     return (
         <section className='bg-white w-full min-h-screen flex flex-col gap-4 p-4 text-black'>
             {loading && <>로딩중</>}

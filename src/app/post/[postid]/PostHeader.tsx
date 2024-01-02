@@ -37,14 +37,19 @@ export default function PostHeader({ data }: IProps) {
         deletePost.mutate(id);
     }
 
-    function onClickJoin() {
+    async function onClickJoin() {
         if (!userInfo.id) return toast.error('로그인 후 이용가능합니다.');
+        await axios.put(`/api/user/${userInfo.id}`, { join_posts_id: id });
+
         modifyPost.mutate({
             Row: { join_user_id: [...join_user_id, userInfo.id] },
             postid: id,
         });
     }
-    function onClickCancelJoin() {
+    async function onClickCancelJoin() {
+        await axios.put(`/api/user/${userInfo.id}`, {
+            join_posts_id: id,
+        });
         const newJoinUser = join_user_id.filter((id) => id !== userInfo.id);
         modifyPost.mutate({
             Row: { join_user_id: newJoinUser },

@@ -27,7 +27,6 @@ const categories = [
 
 export default function PostContent({ data }: IProps) {
     const { category, content, date, picture, title, address } = data;
-    console.log('실행?');
 
     const selectedCategory = categories.find(({ value, label }) => {
         return value === category;
