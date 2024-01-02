@@ -6,6 +6,9 @@ import PostComment from './PostComment';
 import PostCommentForm from './PostCommentForm';
 import { redirect } from 'next/navigation';
 import PostWriter from './PostWriter';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 interface IPostPage {
     params: { postid: string };
 }
@@ -22,6 +25,7 @@ export default function PostPage({ params: { postid } }: IPostPage) {
             {loading && <>로딩중</>}
             {post && (
                 <>
+                    <ToastContainer />
                     <PostWriter data={{ ...post![0] }} />
                     <PostMap data={{ ...post![0] }} />
                     <PostComment postData={post![0]} />
