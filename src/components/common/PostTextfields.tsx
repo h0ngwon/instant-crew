@@ -95,7 +95,7 @@ export default function PostTextfields({ data }: IProps) {
                 label='인원수'
                 variant='outlined'
                 {...register('max_join', {
-                    // value: data?.category ? data?.category : '맛집',
+                    value: data?.max_join,
                     required: true,
                 })}
                 SelectProps={{

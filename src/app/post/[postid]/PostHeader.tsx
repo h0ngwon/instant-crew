@@ -76,13 +76,13 @@ export default function PostHeader({ data }: IProps) {
                     </Typography>
                 </div>
                 {userInfo.id === user_id && (
-                    <div>
+                    <div className='flex gap-1 items-center'>
                         <Link href={`/post/modify/${id}`}>
                             <Button
                                 className='text-black hover:bg-transparent rounded-lg'
                                 variant='contained'
                             >
-                                수정하기(테스트)
+                                수정하기
                             </Button>
                         </Link>
                         <Button
@@ -90,7 +90,7 @@ export default function PostHeader({ data }: IProps) {
                             className='text-black hover:bg-transparent rounded-lg'
                             variant='contained'
                         >
-                            삭제하기(테스트)
+                            삭제하기
                         </Button>
                     </div>
                 )}
@@ -100,16 +100,17 @@ export default function PostHeader({ data }: IProps) {
                 <Typography variant='h4' className='font-semibold'>
                     {title}
                 </Typography>
-                {!join_user_id.includes(userInfo.id) && (
-                    <Button
-                        disabled={join_user_id.length === max_join}
-                        onClick={onClickJoin}
-                        className='text-black hover:bg-transparent rounded-lg'
-                        variant='contained'
-                    >
-                        {join_user_id.length}/{max_join} 참여하기
-                    </Button>
-                )}
+                {!join_user_id.includes(userInfo.id) ||
+                    (id !== userInfo.id && (
+                        <Button
+                            disabled={join_user_id.length === max_join}
+                            onClick={onClickJoin}
+                            className='text-black hover:bg-transparent rounded-lg'
+                            variant='contained'
+                        >
+                            {join_user_id.length}/{max_join} 참여하기
+                        </Button>
+                    ))}
 
                 {join_user_id.includes(userInfo.id) && (
                     <Button
