@@ -7,6 +7,7 @@ import { v4 as uuid } from 'uuid';
 import { userState } from '@/recoil/authAtom';
 import axios from 'axios';
 import { Button } from '@mui/material';
+import { toast } from 'react-toastify';
 
 import PostMap from '@/components/common/PostMap';
 import PostTextfields from '@/components/common/PostTextfields';
@@ -20,6 +21,7 @@ export interface ITextFields {
     content: string;
     file: File;
     location: { lat: number; lng: number };
+    max_join: number;
 }
 
 export default function CreatePostPage() {
@@ -36,10 +38,10 @@ export default function CreatePostPage() {
 
     async function submit(data: ITextFields) {
         const id = uuid();
-        const { title, category, date, content, file, location } = data;
-        if (!date) console.log('날짜가 없습니다.');
-        if (!location) console.log('위치정보가 없습니다.');
-        if (!file) console.log('사진이 없습니다.');
+        const { file, location } = data;
+        if (!userInfo.id) return toast.error('로그인 후 시도해주세요');
+        if (!location) return toast.error('위치정보를 등록해주세요');
+        if (!file) return toast.error('사진을 등록해주세요');
 
         const geocoder = new kakao.maps.services.Geocoder();
         let coord = new kakao.maps.LatLng(location.lat, location.lng);
@@ -102,7 +104,7 @@ export default function CreatePostPage() {
                     onSubmit={methods.handleSubmit(submit)}
                 >
                     <PostMap />
-                    <div className='flex gap-4'>
+                    <div className='flex  gap-4'>
                         <PostImgPrivew />
                         <PostTextfields />
                     </div>

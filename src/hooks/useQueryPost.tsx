@@ -12,7 +12,14 @@ export interface IPost {
     title: string;
     user_id: string;
     address: string;
+    max_join: number;
+    join_user_id: string[];
+    user: {
+        nickname: string;
+        profile_pic: string;
+    };
 }
+
 export default function useQueryPost(postid?: string) {
     const queryClient = useQueryClient();
 
@@ -57,6 +64,7 @@ export default function useQueryPost(postid?: string) {
 
     const modifyPost = useMutation({
         mutationFn: async ({ postid, Row }: any) => {
+            console.log(postid);
             const response = await axios.put(`/api/post/${postid}`, Row, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,7 +73,7 @@ export default function useQueryPost(postid?: string) {
             return response;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['post', postid] });
+            queryClient.invalidateQueries({ queryKey: ['post'] });
         },
         onError: (error) => {
             console.log(error);

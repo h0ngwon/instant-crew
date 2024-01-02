@@ -12,6 +12,7 @@ import PostMap from '@/components/common/PostMap';
 import PostTextfields from '@/components/common/PostTextfields';
 import PostImgPrivew from '@/components/common/PostImgPrivew';
 import { redirect } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export interface ITextFields {
     title: string;
@@ -42,8 +43,9 @@ export default function CreatePostPage({ params: { postid } }: IPostPage) {
     async function submit(data: ITextFields) {
         const id = post![0].id;
         const { title, category, date, content, file, location } = data;
-        if (!date) console.log('날짜가 없습니다.');
-        if (!location) console.log('위치정보가 없습니다.');
+        if (!userInfo.id) return toast.error('로그인 후 시도해주세요');
+        if (!location) return toast.error('위치정보를 등록해주세요');
+        if (!file) return toast.error('사진을 등록해주세요');
 
         const geocoder = new kakao.maps.services.Geocoder();
         let coord = new kakao.maps.LatLng(location.lat, location.lng);

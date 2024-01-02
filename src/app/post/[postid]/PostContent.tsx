@@ -26,40 +26,33 @@ const categories = [
 ];
 
 export default function PostContent({ data }: IProps) {
-    const {
-        category,
-        content,
-        created_at,
-        date,
-        id,
-        location,
-        picture,
-        title,
-        user_id,
-        address,
-    } = data;
+    const { category, content, date, picture, title, address } = data;
 
     const selectedCategory = categories.find(({ value, label }) => {
         return value === category;
     });
 
     return (
-        <Card sx={{ maxWidth: 345 }}>
-            <CardHeader
-                sx={{ px: 1 }}
-                title={`${title} ${selectedCategory?.label}`}
-                subheader={address}
-            />
+        <Card className='max-w-[350px] px-2 w-full flex flex-col gap-1 py-1 '>
+            <h1 className='text-2xl'>
+                {title} {selectedCategory?.label}
+            </h1>
+            <div className='text-xs '>
+                <p>주소:{address}</p>
+                <p>날짜:{date}</p>
+            </div>
+
             <CardMedia
-                sx={{ height: 125, objectFit: 'fill' }}
+                className='bg-neutral-100'
+                sx={{
+                    height: 125,
+                    objectFit: 'fill',
+                }}
                 component='img'
                 image={picture}
                 alt='picture'
             />
-
-            <Typography sx={{ px: 1 }} variant='h6' className='font-semibold'>
-                {content}
-            </Typography>
+            <p className='text-lg text-wrap w-full'>{content}</p>
         </Card>
     );
 }
