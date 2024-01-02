@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { Button, TextField } from '@mui/material';
+import { Alert, Button, TextField } from '@mui/material';
 import { IPost } from '@/hooks/useQueryPost';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useQueryComment, { IComment } from '@/hooks/useQueryComment';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { supabase } from '@/apis/dbApi';
+import { toast } from 'react-toastify';
 
 interface IProps {
     postData: IPost;
@@ -28,13 +29,27 @@ export default function PostCommentForm({ postData }: IProps) {
     const onSubmit: SubmitHandler<ICommentFormInput> = async (data) => {
         const userData = await supabase.auth.getSession();
         const userId = userData.data.session?.user.id;
-        const newComment = {
-            ...data,
-            user_id: userId,
-            post_id,
-        };
-        createComment.mutate({ Row: newComment });
-        resetField('content');
+
+        if (userId === undefined) {
+            toast.error('로그인 후 이용해주세요', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+        } else {
+            const newComment = {
+                ...data,
+                user_id: userId,
+                post_id,
+            };
+            createComment.mutate({ Row: newComment });
+            resetField('content');
+        }
     };
     return (
         <>
