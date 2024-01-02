@@ -111,7 +111,7 @@ const Header = () => {
                             <>
                                 <li>
                                     <Button>
-                                        <Link href={`/${userInfo.id}`}>
+                                        <Link href={`/mypage/${userInfo.id}`}>
                                             마이페이지
                                         </Link>
                                     </Button>
