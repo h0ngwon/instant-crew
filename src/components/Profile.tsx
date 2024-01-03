@@ -33,7 +33,9 @@ const Profile = () => {
         fetchData();
     }, []);
 
-    console.log(test);
+    if (!test === undefined) {
+        return null;
+    }
 
     return (
         <div className='flex flex-col justify-center items-center'>

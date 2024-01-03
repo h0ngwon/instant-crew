@@ -38,7 +38,6 @@ const Join = () => {
         return date;
     };
 
-
     useEffect(() => {
         const fetchData = async () => {
             const data = await getUser();
@@ -54,23 +53,17 @@ const Join = () => {
                     .from('user')
                     .select('join_posts_id')
                     .eq('id', user?.user_metadata[0].id);
-
-                if (data && data.length > 0) {
-                    console.log(data[0])
-                    setMyJoin(data[0]);
-                }
+                setMyJoin(data);
             } catch (error) {
                 console.log(error);
             }
         };
         fetchData();
-    }, []);
+    }, [user?.user_metadata]);
 
     useEffect(() => {
         makePost();
-
     }, [myJoin, makePost]);
-
 
     return (
         <div>
@@ -81,7 +74,7 @@ const Join = () => {
                 return (
                     <div
                         key={item.id}
-                        className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden mt-[10px] mb-[10px]'
+                        className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden p-[10px] mt-[10px] mb-[10px]'
                     >
                         <div className='float-left w-[180px] mr-[20px]'>
                             <Image
