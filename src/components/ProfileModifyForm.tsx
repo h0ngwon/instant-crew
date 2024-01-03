@@ -51,14 +51,14 @@ const ProfileModifyForm = () => {
         e: React.FormEvent<HTMLFormElement>,
     ): Promise<void> => {
         e.preventDefault();
-        //TODO storage upload -> databae update -> recoil mutate
+        //TODO storage upload -> databae update -> 
 
         //storage upload
         try {
             if (file) {
                 await supabase.storage
                     .from('user')
-                    .update(`${test?.id}\profile`, file);
+                    .update(`${test?.id}/profile`, file);
             }
         } catch (error) {
             throw new Error();
@@ -94,6 +94,7 @@ const ProfileModifyForm = () => {
             if (data) {
                 await supabase.auth.updateUser({
                     data: {
+                        ...data,
                         full_name: data[0].nickname,
                         avatar_url: data[0].profile_pic,
                     },

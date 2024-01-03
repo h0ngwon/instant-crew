@@ -8,7 +8,8 @@ import { useRecoilState } from 'recoil';
 
 const Profile = () => {
     const [test, setTest] = useState<User | null>();
-
+    const [userInfo, setUserInfo] = useRecoilState<AuthType>(userState);
+    
     useEffect(() => {
         const fetchData = async () => {
             const data = await getUser();
@@ -34,9 +35,7 @@ const Profile = () => {
                     alt='avatar'
                 />
             )}
-            <h1 className='m-8 font-bold text-[48px]'>
-                {test?.user_metadata.full_name}
-            </h1>
+            <h1 className='m-8 font-bold text-[48px]'>{test?.user_metadata.full_name}</h1>
         </div>
     );
 };
