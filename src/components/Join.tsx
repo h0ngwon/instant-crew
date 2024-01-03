@@ -17,14 +17,20 @@ const Join = () => {
     const [myPost, setMyPost] = useState<PostData[] | null>(null);
 
     const makePost = async () => {
-        myJoin?.map(async (item) => {
-            const { data, error } = await supabase
-                .from('post')
-                .select()
-                .eq('id', item.join_posts_id);
-            console.log('makePost', data);
-            if (data) setMyPost(data);
-        });
+        if (!myJoin) return;
+        const join = myJoin[0];
+
+        const newPost = await Promise.all(
+            join.join_posts_id?.map(async (item, index) => {
+                const { data, error } = await supabase
+                    .from('post')
+                    .select()
+                    .eq('id', item);
+                return data![0];
+            }),
+        );
+
+        setMyPost(newPost);
     };
 
     const postTime = (createat: string) => {
@@ -57,7 +63,7 @@ const Join = () => {
 
     useEffect(() => {
         makePost();
-    }, []);
+    }, [myJoin, makePost]);
 
     return (
         <div>
