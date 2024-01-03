@@ -66,33 +66,6 @@ const Join = () => {
         fetchData();
     }, []);
 
-    const makePost = async () => {
-        if (myJoin?.join_posts_id) {
-            myJoin?.join_posts_id.map(async (item) => {
-                try {
-                    const { data, error } = await supabase
-                        .from('post')
-                        .select()
-                        .eq('id', item);
-                    if (error) {
-                        console.log(error);
-                    }
-                    if (data && data.length > 0) {
-                        console.log('inner==========', data);
-                        setMyPost(data);
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-            });
-        }
-    };
-
-    const postTime = (createat: string) => {
-        const date = dayjs(createat).format('YY.MM.DD HH:mm');
-        return date;
-    };
-
     useEffect(() => {
         makePost();
 
