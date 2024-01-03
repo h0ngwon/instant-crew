@@ -58,7 +58,7 @@ const ProfileModifyForm = () => {
             if (file) {
                 await supabase.storage
                     .from('user')
-                    .upload(`${test?.id}/profile`, file,{upsert: true});
+                    .update(`${test?.id}/profile`, file);
             }
         } catch (error) {
             throw new Error();
