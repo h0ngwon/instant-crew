@@ -17,6 +17,7 @@ export interface ProfileType {
 
 const Profile = () => {
     const [test, setTest] = useState<ProfileType[]>([]);
+    const [meta, setMeta] = useState<User | null>();
     const [userInfo, setUserInfo] = useRecoilState<AuthType>(userState);
 
     useEffect(() => {
@@ -26,6 +27,7 @@ const Profile = () => {
                 .from('user')
                 .select()
                 .eq('id', userData.user?.user_metadata[0].id);
+            setMeta
             if (data) {
                 setTest(data);
             }
@@ -41,7 +43,7 @@ const Profile = () => {
         <div className='flex flex-col justify-center items-center'>
             {test[0]?.profile_pic && (
                 <Image
-                    src={`${test[0]?.profile_pic ?? 'img/avatar.png'}`}
+                    src={`${test[0]?.profile_pic ?? '/img/avatar.png' ?? meta?.user_metadata.avatar_url}`}
                     width={150}
                     height={150}
                     alt='avatar'
