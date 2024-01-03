@@ -38,6 +38,7 @@ const Join = () => {
         return date;
     };
 
+
     useEffect(() => {
         const fetchData = async () => {
             const data = await getUser();
@@ -53,17 +54,50 @@ const Join = () => {
                     .from('user')
                     .select('join_posts_id')
                     .eq('id', user?.user_metadata[0].id);
-                setMyJoin(data);
+
+                if (data && data.length > 0) {
+                    console.log(data[0])
+                    setMyJoin(data[0]);
+                }
             } catch (error) {
                 console.log(error);
             }
         };
         fetchData();
-    }, [user?.user_metadata]);
+    }, []);
+
+    const makePost = async () => {
+        if (myJoin?.join_posts_id) {
+            myJoin?.join_posts_id.map(async (item) => {
+                try {
+                    const { data, error } = await supabase
+                        .from('post')
+                        .select()
+                        .eq('id', item);
+                    if (error) {
+                        console.log(error);
+                    }
+                    if (data && data.length > 0) {
+                        console.log('inner==========', data);
+                        setMyPost(data);
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+        }
+    };
+
+    const postTime = (createat: string) => {
+        const date = dayjs(createat).format('YY.MM.DD HH:mm');
+        return date;
+    };
 
     useEffect(() => {
         makePost();
+
     }, [myJoin, makePost]);
+
 
     return (
         <div>
@@ -74,7 +108,7 @@ const Join = () => {
                 return (
                     <div
                         key={item.id}
-                        className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden p-[10px] mt-[10px] mb-[10px]'
+                        className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden mt-[10px] mb-[10px]'
                     >
                         <div className='float-left w-[180px] mr-[20px]'>
                             <Image
