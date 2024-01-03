@@ -100,8 +100,8 @@ export default function PostHeader({ data }: IProps) {
                 <Typography variant='h4' className='font-semibold'>
                     {title}
                 </Typography>
-                {!join_user_id.includes(userInfo.id) ||
-                    (id !== userInfo.id && (
+                {!join_user_id.includes(userInfo.id) &&
+                    user_id !== userInfo.id && (
                         <Button
                             disabled={join_user_id.length === max_join}
                             onClick={onClickJoin}
@@ -110,7 +110,7 @@ export default function PostHeader({ data }: IProps) {
                         >
                             {join_user_id.length}/{max_join} 참여하기
                         </Button>
-                    ))}
+                    )}
 
                 {join_user_id.includes(userInfo.id) && (
                     <Button
