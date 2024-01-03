@@ -12,25 +12,9 @@ interface IJoin {
 }
 
 const Join = () => {
-    const [user, setUser] = useState<User | null>(null);
-    const [myJoin, setMyJoin] = useState<IJoin[] | null>(null);
-    const [myPost, setMyPost] = useState<PostData[] | null>(null);
-
-    const makePost = async () => {
-        myJoin?.map(async (item) => {
-            const { data, error } = await supabase
-                .from('post')
-                .select()
-                .eq('id', item.join_posts_id);
-            console.log('makePost', data);
-            if (data) setMyPost(data);
-        });
-    };
-
-    const postTime = (createat: string) => {
-        const date = dayjs(createat).format('YY.MM.DD HH:mm');
-        return date;
-    };
+    const [user, setUser] = useState<User | null>();
+    const [myJoin, setMyJoin] = useState<IJoin | null>();
+    const [myPost, setMyPost] = useState<PostData[] | null>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,18 +31,50 @@ const Join = () => {
                     .from('user')
                     .select('join_posts_id')
                     .eq('id', user?.user_metadata[0].id);
-                setMyJoin(data);
+
+                if (data && data.length > 0) {
+                    console.log(data[0])
+                    setMyJoin(data[0]);
+                }
             } catch (error) {
                 console.log(error);
             }
         };
         fetchData();
-    }, [user?.user_metadata]);
+    }, []);
+
+    const makePost = async () => {
+        if (myJoin?.join_posts_id) {
+            myJoin?.join_posts_id.map(async (item) => {
+                try {
+                    const { data, error } = await supabase
+                        .from('post')
+                        .select()
+                        .eq('id', item);
+                    if (error) {
+                        console.log(error);
+                    }
+                    if (data && data.length > 0) {
+                        console.log('inner==========', data);
+                        setMyPost(data);
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+        }
+    };
+
+    const postTime = (createat: string) => {
+        const date = dayjs(createat).format('YY.MM.DD HH:mm');
+        return date;
+    };
 
     useEffect(() => {
         makePost();
-    }, []);
+    }, [myJoin]);
 
+    console.log(myJoin);
     return (
         <div>
             <div className='w-[100%] h-[70px] bg-main-background flex justify-center items-center mt-[50px]'>
@@ -68,7 +84,7 @@ const Join = () => {
                 return (
                     <div
                         key={item.id}
-                        className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden p-[10px] mt-[10px] mb-[10px]'
+                        className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden mt-[10px] mb-[10px]'
                     >
                         <div className='float-left w-[180px] mr-[20px]'>
                             <Image
