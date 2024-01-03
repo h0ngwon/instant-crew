@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-interface PostData {
+export interface PostData {
     category: string;
     content: string;
     created_at: string;
@@ -41,7 +41,6 @@ const MyPost = () => {
                     .eq('user_id', user?.user_metadata[0].id);
 
                 if (data) {
-                    console.log(data);
                     setMyPost(data);
                 }
                 //setMyPost(data.);
@@ -64,7 +63,7 @@ const MyPost = () => {
             </div>
             {myPost?.map((item) => {
                 return (
-                    <div key={item.id} className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden p-[10px]'>
+                    <div key={item.id} className='border-solid border-[1px] rounded-[1.5rem] h-[180px] overflow-hidden p-[10px] mb-[10px]'>
                         <div className='float-left w-[180px] mr-[20px]'>
                         <Image
                                 src={item.picture as string}
