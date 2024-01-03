@@ -8,6 +8,7 @@ import { DebouncedFunc, debounce } from 'lodash';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { ProfileType } from './Profile';
 
 const ProfileModifyForm = () => {
     const [userInfo, setUserInfo] = useRecoilState<AuthType>(userState);
@@ -16,15 +17,21 @@ const ProfileModifyForm = () => {
     const [userNickname, setUserNickname] = useState<string>(
         userInfo.full_name,
     );
-
     const [test, setTest] = useState<User | null>();
+    const [profile, setProfile] = useState<ProfileType[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getUser();
-            console.log(data);
+            const userData = await getUser();
+            const { data, error } = await supabase
+                .from('user')
+                .select()
+                .eq('id', userData.user?.user_metadata[0].id);
             if (data) {
-                setTest(data.user);
+                setProfile(data);
+            }
+            if (data) {
+                setTest(userData.user);
             }
         };
         fetchData();
@@ -51,7 +58,7 @@ const ProfileModifyForm = () => {
         e: React.FormEvent<HTMLFormElement>,
     ): Promise<void> => {
         e.preventDefault();
-        //TODO storage upload -> databae update -> 
+        //TODO storage upload -> databae update ->
 
         //storage upload
         try {
@@ -105,6 +112,8 @@ const ProfileModifyForm = () => {
         }
     };
 
+    console.log(profile);
+
     return (
         <form
             className='flex flex-col justify-center items-center gap-[10px]'
@@ -116,7 +125,7 @@ const ProfileModifyForm = () => {
                         className='cursor-pointer'
                         src={
                             prevImage ??
-                            test?.user_metadata.avatar_url ??
+                            profile[0]?.profile_pic ??
                             '/img/avatar.png'
                         }
                         alt='avatar'
@@ -133,10 +142,9 @@ const ProfileModifyForm = () => {
                 />
             </label>
             <TextField
-                label='닉네임'
                 color='warning'
                 required
-                defaultValue={test?.user_metadata.full_name}
+                defaultValue={profile[0]?.nickname}
                 onChange={nicknameHandler}
             ></TextField>
             <Button

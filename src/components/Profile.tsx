@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-interface ProfileType {
+export interface ProfileType {
     email: string;
     id: string;
     nickname: string;
